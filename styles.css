@@ -166,6 +166,84 @@ header {
     flex-wrap: wrap;
 }
 
+/* Add Category form/button */
+.add-category-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+
+.add-category-button {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    background: linear-gradient(135deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 90%, var(--text)) 100%);
+    color: white;
+    font-size: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-category-button:hover { transform: translateY(-2px); }
+
+.add-category-form {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 56px;
+    background: var(--card-background);
+    border: 1.5px solid var(--border);
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    min-width: 220px;
+    z-index: 20;
+    gap: 8px;
+    flex-direction: column;
+}
+
+.add-category-form input {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid color-mix(in srgb, var(--border) 30%, transparent);
+    background: transparent;
+    color: var(--text);
+}
+
+.add-category-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.add-category-submit, .add-category-cancel {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.add-category-submit {
+    background: var(--accent);
+    color: white;
+}
+
+.add-category-cancel {
+    background: transparent;
+    border: 1px solid color-mix(in srgb, var(--border) 30%, transparent);
+    color: var(--text);
+}
+
+.add-category-form.show {
+    display: flex;
+}
+
 /* Undo Button */
 .undo-button {
     display: flex;

@@ -17,6 +17,18 @@
                 <button id="undo-button" class="undo-button" aria-label="Undo last entry" title="Undo last entry">
                     <span class="undo-icon">↶</span>
                 </button>
+                <!-- Add Category UI -->
+                <div class="add-category-wrapper">
+                    <button id="add-category-button" class="add-category-button" aria-expanded="false" title="Add category">＋</button>
+                    <form id="add-category-form" class="add-category-form" aria-hidden="true">
+                        <input id="new-category-id" type="text" placeholder="id (no spaces)" aria-label="New category id" required />
+                        <input id="new-category-name" type="text" placeholder="Display name" aria-label="New category display name" required />
+                        <div class="add-category-actions">
+                            <button type="submit" class="add-category-submit">Create</button>
+                            <button type="button" id="add-category-cancel" class="add-category-cancel">Cancel</button>
+                        </div>
+                    </form>
+                </div>
                 <div class="theme-toggle" role="group" aria-label="Select theme">
                     <button 
                         class="theme-option active" 

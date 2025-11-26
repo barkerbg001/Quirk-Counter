@@ -119,6 +119,10 @@ let state = {
 let cardsContainer;
 let toastContainer;
 let themeOptions;
+let addCategoryButton;
+let addCategoryForm;
+let newCategoryIdInput;
+let newCategoryNameInput;
 
 // Initialize the application
 function init() {
@@ -155,6 +159,28 @@ function init() {
     if (undoButton) {
         undoButton.addEventListener("click", handleUndoLast);
         updateUndoButtonState();
+    }
+
+    // Set up add-category UI
+    addCategoryButton = document.getElementById('add-category-button');
+    addCategoryForm = document.getElementById('add-category-form');
+    newCategoryIdInput = document.getElementById('new-category-id');
+    newCategoryNameInput = document.getElementById('new-category-name');
+
+    if (addCategoryButton && addCategoryForm) {
+        addCategoryButton.addEventListener('click', () => {
+            const isShown = addCategoryForm.classList.toggle('show');
+            addCategoryButton.setAttribute('aria-expanded', String(isShown));
+            addCategoryForm.setAttribute('aria-hidden', String(!isShown));
+            if (isShown) newCategoryIdInput.focus();
+        });
+
+        const cancelBtn = document.getElementById('add-category-cancel');
+        cancelBtn && cancelBtn.addEventListener('click', () => {
+            hideAddCategoryForm();
+        });
+
+        addCategoryForm.addEventListener('submit', handleAddCategorySubmit);
     }
 
     // Set up table sorting
@@ -382,6 +408,62 @@ function updateUndoButtonState() {
         undoButton.disabled = false;
         undoButton.classList.remove("disabled");
     }
+}
+
+// Show/hide add category form
+function hideAddCategoryForm() {
+    if (!addCategoryForm || !addCategoryButton) return;
+    addCategoryForm.classList.remove('show');
+    addCategoryForm.setAttribute('aria-hidden', 'true');
+    addCategoryButton.setAttribute('aria-expanded', 'false');
+    if (newCategoryIdInput) newCategoryIdInput.value = '';
+    if (newCategoryNameInput) newCategoryNameInput.value = '';
+}
+
+// Validate category id (lowercase alnum, hyphen, underscore)
+function isValidCategoryId(id) {
+    return /^[a-z0-9_-]+$/.test(id);
+}
+
+function handleAddCategorySubmit(e) {
+    e.preventDefault();
+    const rawId = (newCategoryIdInput && newCategoryIdInput.value || '').trim();
+    const name = (newCategoryNameInput && newCategoryNameInput.value || '').trim();
+
+    if (!rawId || !name) {
+        showMessage('Please provide both id and display name');
+        return;
+    }
+
+    const id = rawId.toLowerCase();
+
+    if (!isValidCategoryId(id)) {
+        showMessage('Invalid id — use lowercase letters, numbers, - or _');
+        return;
+    }
+
+    if (state.categories.some(c => c.id === id)) {
+        showMessage('Category id already exists');
+        return;
+    }
+
+    const newCat = { id: id, name: name, count: 0 };
+    state.categories.push(newCat);
+
+    // Ensure theme fallbacks exist so display name/phrases are available
+    Object.keys(themes).forEach(themeKey => {
+        const theme = themes[themeKey];
+        if (!theme.categoryNames) theme.categoryNames = {};
+        if (!theme.phrases) theme.phrases = {};
+        if (!theme.categoryNames[id]) theme.categoryNames[id] = name;
+        if (!theme.phrases[id]) theme.phrases[id] = theme.phrases && theme.phrases.default ? [...theme.phrases.default] : ['Event added.'];
+    });
+
+    saveState();
+    renderCards();
+    renderDashboard();
+    showMessage(`${name} category created`);
+    hideAddCategoryForm();
 }
 
 // Get theme-specific category name
