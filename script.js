@@ -21,7 +21,7 @@ const themes = {
             jade: "#2E7D32",
             lantern: "#FFE082"
         },
-        font: "'Noto Serif SC', serif",
+        font: "'Inter', sans-serif",
         icons: {
             burp: "💨",
             fart: "🌬️",
@@ -116,6 +116,58 @@ const themes = {
                 "New entry added to database."
             ]
         }
+    },
+    "forest-grove": {
+        name: "Forest Grove",
+        colors: {
+            background: "#1B4332",
+            cardBackground: "#F0F7F4",
+            text: "#2D3E2D",
+            accent: "#52B788",
+            border: "#74C69D",
+            gold: "#95D5B2",
+            jade: "#2D6A4F",
+            lantern: "#B7E4C7"
+        },
+        font: "'Inter', sans-serif",
+        categoryNames: {
+            burp: "Forest Echoes",
+            fart: "Nature's Whispers",
+            bug: "Garden Discoveries",
+            coffee: "Morning Dew"
+        },
+        phrases: {
+            burp: [
+                "A natural release into the forest air.",
+                "The earth's satisfaction expressed.",
+                "A moment of natural contentment."
+            ],
+            fart: [
+                "A gentle breeze through the leaves.",
+                "Nature's way of expressing itself.",
+                "A soft whisper in the grove."
+            ],
+            bug: [
+                "A discovery along the forest path.",
+                "Nature's gentle surprises.",
+                "The forest keeps us humble."
+            ],
+            coffee: [
+                "Freshness added to the morning collection.",
+                "Another moment of natural energy.",
+                "The forest's vitality preserved."
+            ],
+            sass: [
+                "A touch of nature's attitude.",
+                "Sassiness grows like forest moss.",
+                "Attitude added with natural flair."
+            ],
+            default: [
+                "A moment captured in the forest light.",
+                "Nature's rhythm preserved.",
+                "Another note in the forest's song."
+            ]
+        }
     }
 };
 
@@ -151,11 +203,11 @@ function init() {
     // Update active theme button
     updateActiveThemeButton(state.theme);
 
-    // Render cards
-    renderCards();
+    // Set up navigation
+    setupNavigation();
 
-    // Render dashboard
-    renderDashboard();
+    // Render initial page
+    renderCurrentPage();
 
     // Set up event listeners
     themeOptions.forEach(option => {
@@ -164,13 +216,6 @@ function init() {
             handleThemeChange(themeKey);
         });
     });
-
-    // Set up undo button
-    const undoButton = document.getElementById("undo-button");
-    if (undoButton) {
-        undoButton.addEventListener("click", handleUndoLast);
-        updateUndoButtonState();
-    }
 
     // Set up add-category UI
     addCategoryButton = document.getElementById('add-category-button');
@@ -196,6 +241,61 @@ function init() {
 
     // Set up table sorting
     setupTableSorting();
+}
+
+// Navigation state
+let currentPage = 'home';
+
+// Set up navigation
+function setupNavigation() {
+    const navButtons = document.querySelectorAll('.nav-button');
+    navButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const page = button.getAttribute('data-page');
+            navigateToPage(page);
+        });
+    });
+}
+
+// Navigate to a page
+function navigateToPage(page) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    
+    // Show selected page
+    const targetPage = document.getElementById(`page-${page}`);
+    if (targetPage) {
+        targetPage.classList.add('active');
+    }
+
+    // Update nav buttons
+    document.querySelectorAll('.nav-button').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-page') === page) {
+            btn.classList.add('active');
+        }
+    });
+
+    currentPage = page;
+    renderCurrentPage();
+}
+
+// Render current page content
+function renderCurrentPage() {
+    switch (currentPage) {
+        case 'home':
+            renderCards();
+            break;
+        case 'dashboard':
+            renderDashboard();
+            break;
+        case 'event-log':
+            renderEventTable();
+            break;
+        case 'settings':
+            renderCategoriesList();
+            break;
+    }
 }
 
 // Load state from localStorage
@@ -277,8 +377,7 @@ function handleThemeChange(themeKey) {
     applyTheme(themeKey);
     updateActiveThemeButton(themeKey);
     saveState();
-    renderCards(); // Re-render to update any theme-specific styling
-    renderDashboard(); // Re-render dashboard with new theme
+    renderCurrentPage(); // Re-render current page with new theme
 }
 
 // Get random phrase for category
@@ -364,30 +463,31 @@ function handleIncrement(categoryId) {
         }, 500);
     }
 
-    // Update dashboard
-    renderDashboard();
-
-    // Update undo button state
-    updateUndoButtonState();
+    // Update dashboard and settings if on those pages
+    if (currentPage === 'dashboard') {
+        renderDashboard();
+    }
+    if (currentPage === 'settings') {
+        renderCategoriesList();
+    }
 }
 
-// Handle undo last entry
-function handleUndoLast() {
-    if (state.events.length === 0) {
-        showMessage("No entries to undo");
+// Handle counter decrement
+function handleDecrement(categoryId) {
+    // Find and update category
+    const category = state.categories.find(cat => cat.id === categoryId);
+    if (!category || category.count === 0) {
         return;
     }
 
-    // Get the last event
-    const lastEvent = state.events[state.events.length - 1];
-    
-    // Remove the event
-    state.events.pop();
-    
-    // Decrement the category count
-    const category = state.categories.find(cat => cat.id === lastEvent.categoryId);
-    if (category && category.count > 0) {
-        category.count--;
+    category.count--;
+
+    // Remove the most recent event for this category
+    for (let i = state.events.length - 1; i >= 0; i--) {
+        if (state.events[i].categoryId === categoryId) {
+            state.events.splice(i, 1);
+            break;
+        }
     }
 
     // Save to localStorage
@@ -396,30 +496,19 @@ function handleUndoLast() {
     // Re-render cards
     renderCards();
 
-    // Update dashboard
-    renderDashboard();
-
-    // Update undo button state
-    updateUndoButtonState();
-
     // Show confirmation message
-    const categoryName = getCategoryName(lastEvent.categoryId);
-    showMessage(`Undone: ${categoryName} entry removed`);
-}
+    const categoryName = getCategoryName(categoryId);
+    showMessage(`Removed: ${categoryName} entry`);
 
-// Update undo button state (enable/disable)
-function updateUndoButtonState() {
-    const undoButton = document.getElementById("undo-button");
-    if (!undoButton) return;
-
-    if (state.events.length === 0) {
-        undoButton.disabled = true;
-        undoButton.classList.add("disabled");
-    } else {
-        undoButton.disabled = false;
-        undoButton.classList.remove("disabled");
+    // Update dashboard and settings if on those pages
+    if (currentPage === 'dashboard') {
+        renderDashboard();
+    }
+    if (currentPage === 'settings') {
+        renderCategoriesList();
     }
 }
+
 
 // Show/hide add category form
 function hideAddCategoryForm() {
@@ -473,6 +562,7 @@ function handleAddCategorySubmit(e) {
     saveState();
     renderCards();
     renderDashboard();
+    renderCategoriesList();
     showMessage(`${name} category created`);
     hideAddCategoryForm();
 }
@@ -495,8 +585,57 @@ function handleDeleteCategory(categoryId) {
     saveState();
     renderCards();
     renderDashboard();
-    updateUndoButtonState();
+    renderCategoriesList();
     showMessage(`${categoryName} deleted`);
+}
+
+// Render categories list in settings
+function renderCategoriesList() {
+    const categoriesList = document.getElementById('categories-list');
+    if (!categoriesList) return;
+
+    categoriesList.innerHTML = '';
+
+    if (state.categories.length === 0) {
+        categoriesList.innerHTML = '<p style="text-align: center; color: var(--text); opacity: 0.7; padding: 20px;">No categories yet. Add one above!</p>';
+        return;
+    }
+
+    state.categories.forEach(category => {
+        const item = document.createElement('div');
+        item.className = 'category-item';
+
+        const info = document.createElement('div');
+        info.className = 'category-item-info';
+
+        const name = document.createElement('div');
+        name.className = 'category-item-name';
+        name.textContent = getCategoryName(category.id);
+
+        const id = document.createElement('div');
+        id.className = 'category-item-id';
+        id.textContent = `ID: ${category.id}`;
+
+        info.appendChild(name);
+        info.appendChild(id);
+
+        const count = document.createElement('div');
+        count.className = 'category-item-count';
+        count.textContent = category.count;
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'category-item-delete';
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.addEventListener('click', () => {
+            handleDeleteCategory(category.id);
+        });
+
+        item.appendChild(info);
+        item.appendChild(count);
+        item.appendChild(deleteBtn);
+
+        categoriesList.appendChild(item);
+    });
 }
 
 // Get theme-specific category name
@@ -527,9 +666,20 @@ function renderCards() {
         count.className = "card-count";
         count.textContent = category.count;
 
+        // Minus button
+        const minusButton = document.createElement("button");
+        minusButton.className = "minus-button";
+        minusButton.textContent = "−";
+        minusButton.setAttribute("aria-label", `Remove one from ${getCategoryName(category.id)}`);
+        minusButton.disabled = category.count === 0;
+        minusButton.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            handleDecrement(category.id);
+        });
+
         const button = document.createElement("button");
         button.className = "add-button";
-        button.textContent = "+ Add";
+        button.textContent = "+";
         button.setAttribute("aria-label", `Add one to ${getCategoryName(category.id)}`);
         button.addEventListener("click", () => handleIncrement(category.id));
 
@@ -538,22 +688,28 @@ function renderCards() {
         deleteBtn.className = 'delete-category-button';
         deleteBtn.setAttribute('aria-label', `Delete ${getCategoryName(category.id)}`);
         deleteBtn.title = 'Delete category';
-        deleteBtn.textContent = '🗑';
+        const deleteIcon = document.createElement('span');
+        deleteIcon.className = 'material-icons';
+        deleteIcon.textContent = 'delete';
+        deleteBtn.appendChild(deleteIcon);
         deleteBtn.addEventListener('click', (ev) => {
             ev.stopPropagation();
             handleDeleteCategory(category.id);
         });
 
+        // Button container
+        const buttonContainer = document.createElement("div");
+        buttonContainer.className = "card-buttons";
+        buttonContainer.appendChild(minusButton);
+        buttonContainer.appendChild(button);
+
         card.appendChild(title);
         card.appendChild(count);
         card.appendChild(deleteBtn);
-        card.appendChild(button);
+        card.appendChild(buttonContainer);
 
         cardsContainer.appendChild(card);
     });
-
-    // Update undo button state
-    updateUndoButtonState();
 }
 
 // ============================================
@@ -654,7 +810,7 @@ function getManagersNote() {
             "coffee": "Staff running on high-octane fuel today!"
         };
         return notes[categoryId] || `High activity in ${mostActive} today!`;
-    } else {
+    } else if (state.theme === "neon-nexus") {
         const notes = {
             "burp": "Audio systems experiencing heavy load.",
             "fart": "Atmospheric sensors detecting anomalies.",
@@ -662,6 +818,16 @@ function getManagersNote() {
             "coffee": "Energy levels at maximum capacity."
         };
         return notes[categoryId] || `High activity in ${mostActive} today!`;
+    } else if (state.theme === "forest-grove") {
+        const notes = {
+            "burp": "Natural moments of contentment in the grove.",
+            "fart": "Gentle breezes flowing through the forest.",
+            "bug": "Nature's discoveries keeping us grounded.",
+            "coffee": "Fresh energy flowing like morning dew."
+        };
+        return notes[categoryId] || `Natural activity in ${mostActive} today!`;
+    } else {
+        return `High activity in ${mostActive} today!`;
     }
 }
 
@@ -693,7 +859,7 @@ function renderKPIs() {
         </div>
         <div class="kpi-card">
             <div class="kpi-label">Most Active Today</div>
-            <div class="kpi-value">${mostActive || "N/A"}</div>
+            <div class="kpi-value ${!mostActive || mostActive === "N/A" || !/^\d+$/.test(String(mostActive)) ? 'text-value' : ''}">${mostActive || "N/A"}</div>
         </div>
         <div class="kpi-card">
             <div class="kpi-label">Peak Hour</div>
@@ -943,7 +1109,6 @@ function renderDashboard() {
     renderBreakdownGrid();
     renderBarChart();
     renderLineChart();
-    renderEventTable();
 }
 
 // Initialize when DOM is ready

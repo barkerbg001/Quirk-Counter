@@ -7,95 +7,87 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Quirk Counter</h1>
-            <div class="header-controls">
-                <button id="undo-button" class="undo-button" aria-label="Undo last entry" title="Undo last entry">
-                    <span class="undo-icon">↶</span>
+            <nav class="main-nav" role="navigation" aria-label="Main navigation">
+                <button class="nav-button active" data-page="home" aria-label="Home page">
+                    <span class="material-icons nav-icon">home</span>
+                    <span class="nav-text">Home</span>
                 </button>
-                <!-- Add Category UI -->
-                <div class="add-category-wrapper">
-                    <button id="add-category-button" class="add-category-button" aria-expanded="false" title="Add category">＋</button>
-                    <form id="add-category-form" class="add-category-form" aria-hidden="true">
-                        <input id="new-category-id" type="text" placeholder="id (no spaces)" aria-label="New category id" required />
-                        <input id="new-category-name" type="text" placeholder="Display name" aria-label="New category display name" required />
-                        <div class="add-category-actions">
-                            <button type="submit" class="add-category-submit">Create</button>
-                            <button type="button" id="add-category-cancel" class="add-category-cancel">Cancel</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="theme-toggle" role="group" aria-label="Select theme">
-                    <button 
-                        class="theme-option active" 
-                        data-theme="dragon-dynasty" 
-                        aria-pressed="true"
-                        aria-label="Dragon Dynasty theme"
-                        title="Dragon Dynasty">
-                        <span class="theme-icon">🐉</span>
-                    </button>
-                    <button 
-                        class="theme-option" 
-                        data-theme="neon-nexus" 
-                        aria-pressed="false"
-                        aria-label="Neon Nexus theme"
-                        title="Neon Nexus">
-                        <span class="theme-icon">⚡</span>
-                    </button>
-                </div>
-            </div>
+                <button class="nav-button" data-page="dashboard" aria-label="Dashboard page">
+                    <span class="material-icons nav-icon">dashboard</span>
+                    <span class="nav-text">Dashboard</span>
+                </button>
+                <button class="nav-button" data-page="event-log" aria-label="Event Log page">
+                    <span class="material-icons nav-icon">list</span>
+                    <span class="nav-text">Event Log</span>
+                </button>
+                <button class="nav-button" data-page="settings" aria-label="Settings page">
+                    <span class="material-icons nav-icon">settings</span>
+                    <span class="nav-text">Settings</span>
+                </button>
+            </nav>
         </header>
 
         <div id="toast-container" class="toast-container" aria-live="polite"></div>
 
-        <div id="cards-container" class="cards-container">
-            <!-- Cards will be dynamically generated -->
+        <!-- Home Page -->
+        <div id="page-home" class="page active">
+            <div id="cards-container" class="cards-container">
+                <!-- Cards will be dynamically generated -->
+            </div>
         </div>
 
-        <section id="dashboard" class="dashboard-section">
-            <h2 class="dashboard-header">Analytics Dashboard</h2>
-            
-            <!-- KPI Cards -->
-            <div class="kpi-grid" id="kpi-grid">
-                <!-- KPI cards will be dynamically generated -->
-            </div>
-
-            <!-- Daily Summary -->
-            <div class="daily-summary" id="daily-summary">
-                <!-- Daily summary will be dynamically generated -->
-            </div>
-
-            <!-- Category Breakdown -->
-            <div class="breakdown-section">
-                <h3 class="section-title">Category Breakdown</h3>
-                <div class="breakdown-grid" id="breakdown-grid">
-                    <!-- Breakdown cards will be dynamically generated -->
+        <!-- Dashboard Page -->
+        <div id="page-dashboard" class="page">
+            <section class="dashboard-section">
+                <h2 class="dashboard-header">Analytics Dashboard</h2>
+                
+                <!-- KPI Cards -->
+                <div class="kpi-grid" id="kpi-grid">
+                    <!-- KPI cards will be dynamically generated -->
                 </div>
-            </div>
 
-            <!-- Charts Section -->
-            <div class="charts-section">
-                <div class="chart-container">
-                    <h3 class="section-title">Events by Category</h3>
-                    <div class="bar-chart" id="bar-chart">
-                        <!-- Bar chart will be dynamically generated -->
+                <!-- Daily Summary -->
+                <div class="daily-summary" id="daily-summary">
+                    <!-- Daily summary will be dynamically generated -->
+                </div>
+
+                <!-- Category Breakdown -->
+                <div class="breakdown-section">
+                    <h3 class="section-title">Category Breakdown</h3>
+                    <div class="breakdown-grid" id="breakdown-grid">
+                        <!-- Breakdown cards will be dynamically generated -->
                     </div>
                 </div>
-                <div class="chart-container">
-                    <h3 class="section-title">Events Over Time</h3>
-                    <div class="line-chart" id="line-chart">
-                        <!-- Line chart will be dynamically generated -->
+
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <h3 class="section-title">Events by Category</h3>
+                        <div class="bar-chart" id="bar-chart">
+                            <!-- Bar chart will be dynamically generated -->
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3 class="section-title">Events Over Time</h3>
+                        <div class="line-chart" id="line-chart">
+                            <!-- Line chart will be dynamically generated -->
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
+        </div>
 
-            <!-- Event Log Table -->
-            <div class="table-section">
-                <h3 class="section-title">Event Log</h3>
+        <!-- Event Log Page -->
+        <div id="page-event-log" class="page">
+            <section class="event-log-section">
+                <h2 class="page-header">Event Log</h2>
                 <div class="table-wrapper">
                     <table class="event-table" id="event-table">
                         <thead>
@@ -110,8 +102,68 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="page-settings" class="page">
+            <section class="settings-section">
+                <h2 class="page-header">Settings</h2>
+                
+                <div class="settings-group">
+                    <h3 class="settings-title">Theme</h3>
+                    <div class="theme-toggle" role="group" aria-label="Select theme">
+                        <button 
+                            class="theme-option active" 
+                            data-theme="dragon-dynasty" 
+                            aria-pressed="true"
+                            aria-label="Dragon Dynasty theme"
+                            title="Dragon Dynasty">
+                            <span class="material-icons theme-icon">auto_awesome</span>
+                            <span class="theme-name">Dragon Dynasty</span>
+                        </button>
+                        <button 
+                            class="theme-option" 
+                            data-theme="neon-nexus" 
+                            aria-pressed="false"
+                            aria-label="Neon Nexus theme"
+                            title="Neon Nexus">
+                            <span class="material-icons theme-icon">bolt</span>
+                            <span class="theme-name">Neon Nexus</span>
+                        </button>
+                        <button 
+                            class="theme-option" 
+                            data-theme="forest-grove" 
+                            aria-pressed="false"
+                            aria-label="Forest Grove theme"
+                            title="Forest Grove">
+                            <span class="material-icons theme-icon">park</span>
+                            <span class="theme-name">Forest Grove</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <div class="settings-title-row">
+                        <h3 class="settings-title">Categories</h3>
+                        <button id="add-category-button" class="add-category-button-inline" aria-expanded="false" title="Add category">＋</button>
+                    </div>
+                    <div class="add-category-wrapper">
+                        <form id="add-category-form" class="add-category-form" aria-hidden="true">
+                            <input id="new-category-id" type="text" placeholder="id (no spaces)" aria-label="New category id" required />
+                            <input id="new-category-name" type="text" placeholder="Display name" aria-label="New category display name" required />
+                            <div class="add-category-actions">
+                                <button type="submit" class="add-category-submit">Create</button>
+                                <button type="button" id="add-category-cancel" class="add-category-cancel">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="categories-list" class="categories-list">
+                        <!-- Categories will be dynamically generated -->
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
 
     <script src="script.js"></script>
