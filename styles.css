@@ -244,6 +244,32 @@ header {
     display: flex;
 }
 
+/* Delete category button on cards */
+.delete-category-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    opacity: 0.85;
+}
+
+.card:hover .delete-category-button {
+    transform: translateY(-2px);
+    opacity: 1;
+}
+
+.delete-category-button:active {
+    transform: translateY(0);
+}
+
 /* Undo Button */
 .undo-button {
     display: flex;

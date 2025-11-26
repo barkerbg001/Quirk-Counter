@@ -3,7 +3,8 @@ const DEFAULT_CATEGORIES = [
     { id: "burp", name: "Burps", count: 0 },
     { id: "fart", name: "Farts", count: 0 },
     { id: "bug", name: "Bugs Introduced", count: 0 },
-    { id: "coffee", name: "Coffee Consumed", count: 0 }
+    { id: "coffee", name: "Coffee Consumed", count: 0 },
+    { id: "sass", name: "Sass", count: 0 }
 ];
 
 // Theme definitions
@@ -55,6 +56,11 @@ const themes = {
                 "Recorded on today's specials board.",
                 "Another entry for the restaurant log."
             ],
+            sass: [
+                "A pinch of sass was sprinkled.",
+                "Sass logged — served with attitude.",
+                "Seasoned with sassiness."
+            ],
             default: [
                 "Order added to the chef's ledger.",
                 "Recorded on today's specials board.",
@@ -98,6 +104,11 @@ const themes = {
                 "Caffeine injection successful.",
                 "Processing power increased by 200%.",
                 "System alertness level: MAXIMUM"
+            ],
+            sass: [
+                "SASS module injected.",
+                "Style attitude recorded.",
+                "Sass event committed to memory."
             ],
             default: [
                 "Event synced to mainframe.",
@@ -466,6 +477,28 @@ function handleAddCategorySubmit(e) {
     hideAddCategoryForm();
 }
 
+// Delete category and associated events
+function handleDeleteCategory(categoryId) {
+    const category = state.categories.find(c => c.id === categoryId);
+    if (!category) return;
+
+    const categoryName = getCategoryName(categoryId);
+    const confirmed = window.confirm(`Delete category "${categoryName}"? This will remove all associated events.`);
+    if (!confirmed) return;
+
+    // Remove category
+    state.categories = state.categories.filter(c => c.id !== categoryId);
+
+    // Remove related events
+    state.events = state.events.filter(e => e.categoryId !== categoryId);
+
+    saveState();
+    renderCards();
+    renderDashboard();
+    updateUndoButtonState();
+    showMessage(`${categoryName} deleted`);
+}
+
 // Get theme-specific category name
 function getCategoryName(categoryId) {
     const theme = themes[state.theme];
@@ -500,8 +533,20 @@ function renderCards() {
         button.setAttribute("aria-label", `Add one to ${getCategoryName(category.id)}`);
         button.addEventListener("click", () => handleIncrement(category.id));
 
+        // Delete button
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-category-button';
+        deleteBtn.setAttribute('aria-label', `Delete ${getCategoryName(category.id)}`);
+        deleteBtn.title = 'Delete category';
+        deleteBtn.textContent = '🗑';
+        deleteBtn.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            handleDeleteCategory(category.id);
+        });
+
         card.appendChild(title);
         card.appendChild(count);
+        card.appendChild(deleteBtn);
         card.appendChild(button);
 
         cardsContainer.appendChild(card);
