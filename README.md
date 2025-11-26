@@ -25,6 +25,9 @@ A delightful, feature-rich counter application with dual themes and comprehensiv
 - **Pulse Animations**: Visual feedback when incrementing counters
 - **Hover Effects**: Smooth transitions and hover states throughout the UI
 - **Responsive Design**: Optimized for desktop, tablet, and mobile devices
+- **Custom Categories (UI)**: Create new categories from the header using the `＋` button — new categories persist in localStorage
+- **Delete Categories**: Remove categories you no longer need via the trash (🗑) button on each card. Deleting a category also deletes all events associated with it (a confirmation dialog appears first). Be cautious: deletions are permanent in the current UI.
+- **Default 'Sass' Category**: An additional default category `Sass` is included out-of-the-box.
 
 ### 💾 Data Persistence
 - Local storage integration for saving state across sessions
@@ -133,7 +136,11 @@ A cyberpunk-inspired theme featuring:
 ## 💡 Customization
 
 ### Adding New Categories
-Edit the `DEFAULT_CATEGORIES` array in `script.js`:
+You can add categories in two ways:
+
+- **Quick (UI)**: Click the `＋` button in the header, enter an id (lowercase, no spaces, only `a-z0-9_-`) and a display name, then click `Create`. The new category is stored in localStorage and immediately appears in the UI.
+
+- **Source (code)**: Edit the `DEFAULT_CATEGORIES` array in `script.js` if you want a category to ship by default:
 
 ```javascript
 const DEFAULT_CATEGORIES = [
@@ -141,7 +148,7 @@ const DEFAULT_CATEGORIES = [
     { id: "fart", name: "Farts", count: 0 },
     { id: "bug", name: "Bugs Introduced", count: 0 },
     { id: "coffee", name: "Coffee Consumed", count: 0 },
-    { id: "custom", name: "Custom Category", count: 0 }
+    { id: "sass", name: "Sass", count: 0 }
 ];
 ```
 
@@ -221,6 +228,11 @@ Give a ⭐️ if you like this project!
 - 💾 Local storage persistence
 - 📱 Fully responsive design
 - ⚡ Smooth animations and transitions
+
+### Version 1.1.0 (Update)
+- ✨ Added `Sass` default category
+- ➕ In-UI custom category creation (header `＋` button)
+- 🗑️ Category deletion (deletes associated events; confirmation required)
 
 ## 🔮 Future Enhancements
 
