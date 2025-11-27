@@ -241,6 +241,10 @@ function init() {
 
     // Set up table sorting
     setupTableSorting();
+
+    // Set up export button on event log
+    const exportBtn = document.getElementById('export-events-button');
+    exportBtn && exportBtn.addEventListener('click', exportEvents);
 }
 
 // Navigation state
@@ -325,6 +329,67 @@ function saveState() {
     } catch (e) {
         console.error("Error saving state:", e);
     }
+}
+
+// Export events as JSON and CSV
+function exportEvents() {
+    if (!state || !Array.isArray(state.events)) {
+        showMessage('No events to export');
+        return;
+    }
+
+    const now = new Date();
+    const ts = now.toISOString().slice(0,19).replace(/[:T]/g, '-');
+
+    // JSON export (events only)
+    try {
+        const jsonBlob = new Blob([JSON.stringify(state.events, null, 2)], { type: 'application/json' });
+        downloadBlob(jsonBlob, `quirk-events-${ts}.json`);
+    } catch (e) {
+        console.error('Error exporting JSON:', e);
+        showMessage('Failed to export JSON');
+    }
+
+    // CSV export (events with category name)
+    try {
+        const headers = ['timestamp', 'categoryId', 'categoryName', 'phrase'];
+        const rows = [headers.join(',')];
+        state.events.forEach(ev => {
+            const categoryName = getCategoryName(ev.categoryId).replace(/\n/g, ' ');
+            const r = [ev.timestamp, ev.categoryId, categoryName, ev.phrase];
+            rows.push(r.map(escapeCSV).join(','));
+        });
+        const csvBlob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+        downloadBlob(csvBlob, `quirk-events-${ts}.csv`);
+    } catch (e) {
+        console.error('Error exporting CSV:', e);
+        showMessage('Failed to export CSV');
+    }
+
+    showMessage('Export started — check your downloads');
+}
+
+function downloadBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }, 100);
+}
+
+function escapeCSV(value) {
+    if (value === null || value === undefined) return '';
+    const str = String(value);
+    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+        return '"' + str.replace(/"/g, '""') + '"';
+    }
+    return str;
 }
 
 // Apply theme by updating CSS variables
