@@ -1644,6 +1644,40 @@ body[data-theme="neon-nexus"] .theme-option.active {
     font-style: italic;
 }
 
+/* Event Log actions (export button, filters) */
+.event-log-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.export-button {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 2px solid color-mix(in srgb, var(--border) 60%, transparent);
+    background: linear-gradient(135deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 85%, var(--text)) 100%);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+    box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.export-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.export-button:active {
+    transform: translateY(-1px) scale(0.995);
+}
+
+.export-button:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    outline-offset: 2px;
+}
+
 /* Responsive Dashboard */
 @media (max-width: 768px) {
     .dashboard-header {
