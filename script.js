@@ -168,6 +168,58 @@ const themes = {
                 "Another note in the forest's song."
             ]
         }
+    },
+    "ruby-sea": {
+        name: "Ruby Sea",
+        colors: {
+            background: "#122236",
+            cardBackground: "#0e1b2a",
+            text: "#a2aabc",
+            accent: "#ff4c5a",
+            border: "#214b78",
+            gold: "#ffd580",
+            jade: "#3da5f6",
+            lantern: "#62c6ff"
+        },
+        font: "'Inter', sans-serif",
+        categoryNames: {
+            burp: "Ocean Depths",
+            fart: "Sea Currents",
+            bug: "Coral Reefs",
+            coffee: "Pearl Dives"
+        },
+        phrases: {
+            burp: [
+                "A bubble rises from the depths.",
+                "The ocean's breath surfaces.",
+                "A current of satisfaction flows."
+            ],
+            fart: [
+                "A gentle current stirs the waters.",
+                "The sea whispers its secrets.",
+                "Oceanic winds drift by."
+            ],
+            bug: [
+                "A treasure discovered in the depths.",
+                "The reef reveals its mysteries.",
+                "Something glimmers in the abyss."
+            ],
+            coffee: [
+                "A pearl added to the collection.",
+                "Deeper into the ocean we dive.",
+                "The sea's bounty increases."
+            ],
+            sass: [
+                "A sharp current of attitude.",
+                "Sass flows like ocean waves.",
+                "Attitude as deep as the sea."
+            ],
+            default: [
+                "Another entry in the captain's log.",
+                "The depths record this moment.",
+                "A ripple in the Ruby Sea."
+            ]
+        }
     }
 };
 
@@ -1034,6 +1086,14 @@ function getManagersNote() {
             "coffee": "Fresh energy flowing like morning dew."
         };
         return notes[categoryId] || `Natural activity in ${mostActive} today!`;
+    } else if (state.theme === "ruby-sea") {
+        const notes = {
+            "burp": "Bubbles rising from the ocean depths!",
+            "fart": "Currents stirring in the Ruby Sea.",
+            "bug": "Treasures discovered in the coral reefs.",
+            "coffee": "Diving deeper into the ocean's bounty."
+        };
+        return notes[categoryId] || `Oceanic activity in ${mostActive} today!`;
     } else {
         return `High activity in ${mostActive} today!`;
     }
