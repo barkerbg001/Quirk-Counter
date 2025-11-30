@@ -318,6 +318,9 @@ function init() {
             handleTodoFilter(filter);
         });
     });
+
+    // Set up drag and drop for todos
+    setupTodoDragAndDrop();
 }
 
 // Navigation state
@@ -1401,6 +1404,9 @@ function renderTodos() {
     
     if (!todoListTodo || !todoListInProgress || !todoListDone) return;
 
+    // Re-setup drag and drop after rendering (in case columns were recreated)
+    setupTodoDragAndDrop();
+
     // Clear all lists
     todoListTodo.innerHTML = '';
     todoListInProgress.innerHTML = '';
@@ -1462,6 +1468,12 @@ function createTodoItem(todo) {
     const item = document.createElement('div');
     item.className = `todo-item todo-item-${todo.status}`;
     item.setAttribute('data-todo-id', todo.id);
+    item.draggable = true;
+    item.setAttribute('draggable', 'true');
+
+    // Drag event handlers
+    item.addEventListener('dragstart', handleDragStart);
+    item.addEventListener('dragend', handleDragEnd);
 
     const text = document.createElement('div');
     text.className = 'todo-text';
@@ -1534,6 +1546,83 @@ function createTodoItem(todo) {
     item.appendChild(actions);
 
     return item;
+}
+
+// Drag and drop handlers
+let draggedTodo = null;
+
+function handleDragStart(e) {
+    draggedTodo = this;
+    this.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', this.innerHTML);
+    // Set a custom data attribute
+    e.dataTransfer.setData('todo-id', this.getAttribute('data-todo-id'));
+}
+
+function handleDragEnd(e) {
+    this.classList.remove('dragging');
+    // Remove drag-over class from all columns
+    document.querySelectorAll('.todo-column').forEach(col => {
+        col.classList.remove('drag-over');
+    });
+    draggedTodo = null;
+}
+
+// Set up drop zones for todo columns
+function setupTodoDragAndDrop() {
+    const todoColumns = document.querySelectorAll('.todo-column');
+    
+    todoColumns.forEach(column => {
+        // Allow drop
+        column.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            column.classList.add('drag-over');
+        });
+
+        column.addEventListener('dragleave', (e) => {
+            // Only remove drag-over if we're leaving the column itself
+            if (!column.contains(e.relatedTarget)) {
+                column.classList.remove('drag-over');
+            }
+        });
+
+        column.addEventListener('drop', (e) => {
+            e.preventDefault();
+            column.classList.remove('drag-over');
+            
+            if (draggedTodo) {
+                const todoId = draggedTodo.getAttribute('data-todo-id');
+                const newStatus = column.getAttribute('data-status');
+                
+                // Update todo status
+                updateTodoStatus(todoId, newStatus);
+            }
+        });
+    });
+
+    // Also set up drop zones for the todo lists themselves
+    const todoLists = document.querySelectorAll('.todo-list');
+    todoLists.forEach(list => {
+        list.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        });
+
+        list.addEventListener('drop', (e) => {
+            e.preventDefault();
+            
+            if (draggedTodo) {
+                const todoId = draggedTodo.getAttribute('data-todo-id');
+                const column = list.closest('.todo-column');
+                if (column) {
+                    const newStatus = column.getAttribute('data-status');
+                    updateTodoStatus(todoId, newStatus);
+                }
+            }
+        });
+    });
 }
 
 // Initialize when DOM is ready

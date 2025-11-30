@@ -2126,6 +2126,14 @@ body[data-theme="forest-grove"] .dialog-header {
     min-height: 400px;
     display: flex;
     flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.todo-column.drag-over {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--card-background) 95%, var(--accent));
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 30%, transparent);
+    transform: scale(1.02);
 }
 
 .todo-column-title {
@@ -2161,6 +2169,14 @@ body[data-theme="forest-grove"] .dialog-header {
     flex-direction: column;
     gap: 12px;
     min-height: 200px;
+    transition: all 0.3s ease;
+}
+
+.todo-list.drag-over {
+    background: color-mix(in srgb, var(--accent) 5%, transparent);
+    border-radius: 8px;
+    padding: 8px;
+    margin: -8px;
 }
 
 .todo-item {
@@ -2174,6 +2190,19 @@ body[data-theme="forest-grove"] .dialog-header {
     gap: 12px;
     transition: all 0.3s ease;
     animation: slideIn 0.3s ease;
+    cursor: grab;
+    user-select: none;
+}
+
+.todo-item:active {
+    cursor: grabbing;
+}
+
+.todo-item.dragging {
+    opacity: 0.5;
+    transform: rotate(2deg);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    cursor: grabbing;
 }
 
 @keyframes slideIn {

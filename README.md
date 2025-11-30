@@ -25,18 +25,29 @@ A delightful, feature-rich counter application with three distinct themes and co
 - **Toast Notifications**: Elegant toast messages with random contextual phrases
 - **Pulse Animations**: Visual feedback when incrementing counters
 - **Hover Effects**: Smooth transitions and hover states throughout the UI
-- **Multi-Page Navigation**: Navigate between Home, Dashboard, Event Log, and Settings pages
+- **Multi-Page Navigation**: Navigate between Home, Dashboard, Event Log, Todos, and Settings pages
+- **Todo List System**: Full-featured todo list with three status columns (Todo, In Progress, Done) and filtering capabilities
 - **Responsive Design**: Optimized for desktop, tablet, and mobile devices
 - **Custom Categories (UI)**: Create new categories from the Settings page using the `＋` button — new categories persist in localStorage
 - **Delete Categories**: Remove categories you no longer need via the delete button on each card. Deleting a category also deletes all events associated with it (a beautiful custom confirmation dialog appears first). Be cautious: deletions are permanent.
 - **Custom Dialog System**: Theme-aware confirmation dialogs replace default browser alerts with smooth animations and consistent styling
 - **Daily Reset**: All tallies automatically reset to 0 at the start of each new day
 
+### ✅ Todo List Features
+- **Three-Column Kanban Board**: Organize todos into Todo, In Progress, and Done columns
+- **Status Management**: Easily move todos between statuses with intuitive action buttons
+- **Filtering**: Filter todos by status (All, Todo, In Progress, Done)
+- **Count Badges**: See at a glance how many items are in each column
+- **Delete Functionality**: Remove todos with custom confirmation dialog
+- **Theme Integration**: Todo list styling adapts to all three themes
+- **Persistent Storage**: All todos saved to localStorage
+
 ### 💾 Data Persistence
 - Local storage integration for saving state across sessions
 - Persistent theme preferences
 - Event history tracking with timestamps
 - Category counts and event log retention
+- Todo list persistence
 - Automatic daily reset tracking
 
 ### 📤 Data Export
@@ -107,6 +118,7 @@ Then navigate to `http://localhost:8000` in your browser.
   - **Home**: View and interact with counter cards
   - **Dashboard**: View analytics and visualizations
   - **Event Log**: Browse all events in a sortable table
+  - **Todos**: Manage your todo list with status tracking
   - **Settings**: Change theme and manage categories
 
 ### Switching Themes
@@ -140,20 +152,20 @@ Then navigate to `http://localhost:8000` in your browser.
 - You can also close the dialog by clicking the X button, clicking outside the dialog, or pressing the Escape key
 - The dialog matches your current theme and includes smooth animations
 
-### Using as a Todo Tracker
-While Quirk Counter is designed for tracking quirky events, you can also use it as a simple todo tracker:
-1. **Create Todo Categories**: Use the Settings page to add custom categories like "Tasks Completed", "Goals Achieved", or "Daily Wins"
-2. **Track Progress**: Click the **"+"** button each time you complete a task or achieve a goal
-3. **Daily Reset**: Take advantage of the automatic daily reset to start fresh each day
-4. **View Analytics**: Check the Dashboard to see your productivity patterns and peak activity hours
-5. **Export Data**: Export your todo history to track long-term progress
+### Managing Your Todo List
+Navigate to the **Todos** page to manage your tasks:
+1. **Add a Todo**: Type your task in the input field and click **Add**
+2. **Change Status**: Use the action buttons on each todo item:
+   - From **Todo**: Move to In Progress or mark as Done
+   - From **In Progress**: Move back to Todo or mark as Done
+   - From **Done**: Move back to Todo or In Progress
+3. **Filter Todos**: Click filter buttons (All, Todo, In Progress, Done) to view specific statuses
+4. **Delete Todos**: Click the delete button (🗑️) on any todo item to remove it (confirmation required)
+5. **View Counts**: See how many items are in each column with the count badges
 
-**Example Todo Categories:**
-- `tasks-done` - Tasks Completed
-- `goals-met` - Goals Achieved  
-- `habits-tracked` - Habits Maintained
-- `wins` - Daily Wins
-- `focus-sessions` - Focus Sessions Completed
+**Todo Status Flow:**
+- **Todo** → **In Progress** → **Done**
+- You can move items in any direction between these statuses
 
 ## 🏗️ Project Structure
 
@@ -259,6 +271,7 @@ Fully responsive design optimized for:
 - **Smooth Animations**: CSS transitions and keyframe animations
 - **Accessibility**: ARIA labels, semantic HTML, keyboard navigation
 - **Custom Dialog System**: Promise-based dialog API with theme-aware styling
+- **Todo List Management**: Kanban-style todo board with status tracking and filtering
 - **No Dependencies**: Pure vanilla JavaScript, no frameworks required
 
 ## 📄 License
@@ -300,11 +313,19 @@ Give a ⭐️ if you like this project!
 - ➖ Decrement functionality on counter cards
 - 🧭 Multi-page navigation system (Home, Dashboard, Event Log, Settings)
 
-### Version 1.3.0 (Current)
+### Version 1.3.0
 - 💬 Custom dialog system replacing default browser alerts
 - 🎨 Theme-aware dialog styling with smooth animations
 - ⌨️ Keyboard support (Escape key to close dialogs)
 - ♿ Enhanced accessibility with ARIA attributes
+
+### Version 1.4.0 (Current)
+- ✅ Full-featured Todo List system with Kanban board layout
+- 📋 Three-column status tracking (Todo, In Progress, Done)
+- 🔍 Todo filtering by status
+- 🎯 Status management with intuitive action buttons
+- 💾 Todo persistence in localStorage
+- 🎨 Theme-aware todo styling
 
 ## 🔮 Future Enhancements
 
