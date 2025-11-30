@@ -176,7 +176,8 @@ let state = {
     categories: [],
     theme: "dragon-dynasty",
     events: [], // Array of { timestamp, categoryId, phrase }
-    lastResetDate: null // Date string (YYYY-MM-DD) when counts were last reset
+    lastResetDate: null, // Date string (YYYY-MM-DD) when counts were last reset
+    todos: [] // Array of { id, text, status, createdAt } where status is 'todo', 'in-progress', or 'done'
 };
 
 // DOM elements
@@ -301,6 +302,22 @@ function init() {
     // Set up export button on event log
     const exportBtn = document.getElementById('export-events-button');
     exportBtn && exportBtn.addEventListener('click', exportEvents);
+
+    // Set up todo form
+    const addTodoForm = document.getElementById('add-todo-form');
+    const newTodoInput = document.getElementById('new-todo-input');
+    if (addTodoForm && newTodoInput) {
+        addTodoForm.addEventListener('submit', handleAddTodoSubmit);
+    }
+
+    // Set up todo filters
+    const todoFilterButtons = document.querySelectorAll('.todo-filter-button');
+    todoFilterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const filter = button.getAttribute('data-filter');
+            handleTodoFilter(filter);
+        });
+    });
 }
 
 // Navigation state
@@ -352,6 +369,9 @@ function renderCurrentPage() {
         case 'event-log':
             renderEventTable();
             break;
+        case 'todos':
+            renderTodos();
+            break;
         case 'settings':
             renderCategoriesList();
             break;
@@ -376,6 +396,7 @@ function loadState() {
             state.theme = parsed.theme || "dragon-dynasty";
             state.events = parsed.events || [];
             state.lastResetDate = parsed.lastResetDate || null;
+            state.todos = parsed.todos || [];
             
             // Check if it's a new day - reset counts if needed
             if (state.lastResetDate !== today) {
@@ -402,11 +423,13 @@ function loadState() {
             state.categories = [...DEFAULT_CATEGORIES];
             state.events = [];
             state.lastResetDate = today;
+            state.todos = [];
         }
     } else {
         state.categories = [...DEFAULT_CATEGORIES];
         state.events = [];
         state.lastResetDate = today;
+        state.todos = [];
     }
 }
 
@@ -1291,6 +1314,226 @@ function renderDashboard() {
     renderBreakdownGrid();
     renderBarChart();
     renderLineChart();
+}
+
+// ============================================
+// TODO LIST FUNCTIONS
+// ============================================
+
+// Generate unique ID for todos
+function generateTodoId() {
+    return `todo-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+}
+
+// Handle add todo form submission
+function handleAddTodoSubmit(e) {
+    e.preventDefault();
+    const input = document.getElementById('new-todo-input');
+    const text = input.value.trim();
+    
+    if (!text) {
+        showMessage('Please enter a todo item');
+        return;
+    }
+
+    const newTodo = {
+        id: generateTodoId(),
+        text: text,
+        status: 'todo',
+        createdAt: new Date().toISOString()
+    };
+
+    state.todos.push(newTodo);
+    saveState();
+    renderTodos();
+    input.value = '';
+    input.focus();
+    showMessage('Todo added!');
+}
+
+// Update todo status
+function updateTodoStatus(todoId, newStatus) {
+    const todo = state.todos.find(t => t.id === todoId);
+    if (todo) {
+        todo.status = newStatus;
+        saveState();
+        renderTodos();
+    }
+}
+
+// Delete todo
+async function handleDeleteTodo(todoId) {
+    const todo = state.todos.find(t => t.id === todoId);
+    if (!todo) return;
+
+    const confirmed = await showDialog(`Delete todo "${todo.text}"?`);
+    if (!confirmed) return;
+
+    state.todos = state.todos.filter(t => t.id !== todoId);
+    saveState();
+    renderTodos();
+    showMessage('Todo deleted');
+}
+
+// Current todo filter
+let currentTodoFilter = 'all';
+
+// Handle todo filter
+function handleTodoFilter(filter) {
+    currentTodoFilter = filter;
+    
+    // Update filter buttons
+    document.querySelectorAll('.todo-filter-button').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-filter') === filter) {
+            btn.classList.add('active');
+        }
+    });
+
+    renderTodos();
+}
+
+// Render todos
+function renderTodos() {
+    const todoListTodo = document.getElementById('todo-list-todo');
+    const todoListInProgress = document.getElementById('todo-list-in-progress');
+    const todoListDone = document.getElementById('todo-list-done');
+    
+    if (!todoListTodo || !todoListInProgress || !todoListDone) return;
+
+    // Clear all lists
+    todoListTodo.innerHTML = '';
+    todoListInProgress.innerHTML = '';
+    todoListDone.innerHTML = '';
+
+    // Filter todos based on current filter
+    let filteredTodos = state.todos;
+    if (currentTodoFilter !== 'all') {
+        filteredTodos = state.todos.filter(t => t.status === currentTodoFilter);
+    }
+
+    // Count todos by status
+    const todoCount = state.todos.filter(t => t.status === 'todo').length;
+    const inProgressCount = state.todos.filter(t => t.status === 'in-progress').length;
+    const doneCount = state.todos.filter(t => t.status === 'done').length;
+
+    // Update counts
+    const todoCountEl = document.getElementById('todo-count');
+    const inProgressCountEl = document.getElementById('todo-count-in-progress');
+    const doneCountEl = document.getElementById('todo-count-done');
+    
+    if (todoCountEl) todoCountEl.textContent = todoCount;
+    if (inProgressCountEl) inProgressCountEl.textContent = inProgressCount;
+    if (doneCountEl) doneCountEl.textContent = doneCount;
+
+    // Render todos
+    state.todos.forEach(todo => {
+        // Skip if filter doesn't match
+        if (currentTodoFilter !== 'all' && todo.status !== currentTodoFilter) {
+            return;
+        }
+
+        const todoItem = createTodoItem(todo);
+
+        // Add to appropriate list
+        if (todo.status === 'todo') {
+            todoListTodo.appendChild(todoItem);
+        } else if (todo.status === 'in-progress') {
+            todoListInProgress.appendChild(todoItem);
+        } else if (todo.status === 'done') {
+            todoListDone.appendChild(todoItem);
+        }
+    });
+
+    // Show empty state messages
+    if (todoListTodo.children.length === 0 && (currentTodoFilter === 'all' || currentTodoFilter === 'todo')) {
+        todoListTodo.innerHTML = '<div class="todo-empty">No todo items yet</div>';
+    }
+    if (todoListInProgress.children.length === 0 && (currentTodoFilter === 'all' || currentTodoFilter === 'in-progress')) {
+        todoListInProgress.innerHTML = '<div class="todo-empty">No items in progress</div>';
+    }
+    if (todoListDone.children.length === 0 && (currentTodoFilter === 'all' || currentTodoFilter === 'done')) {
+        todoListDone.innerHTML = '<div class="todo-empty">No completed items</div>';
+    }
+}
+
+// Create todo item element
+function createTodoItem(todo) {
+    const item = document.createElement('div');
+    item.className = `todo-item todo-item-${todo.status}`;
+    item.setAttribute('data-todo-id', todo.id);
+
+    const text = document.createElement('div');
+    text.className = 'todo-text';
+    text.textContent = todo.text;
+
+    const actions = document.createElement('div');
+    actions.className = 'todo-actions';
+
+    // Status buttons
+    if (todo.status === 'todo') {
+        const inProgressBtn = document.createElement('button');
+        inProgressBtn.className = 'todo-action-button todo-action-in-progress';
+        inProgressBtn.setAttribute('aria-label', 'Mark as in progress');
+        inProgressBtn.title = 'Mark as in progress';
+        inProgressBtn.innerHTML = '<span class="material-icons">hourglass_empty</span>';
+        inProgressBtn.addEventListener('click', () => updateTodoStatus(todo.id, 'in-progress'));
+        actions.appendChild(inProgressBtn);
+
+        const doneBtn = document.createElement('button');
+        doneBtn.className = 'todo-action-button todo-action-done';
+        doneBtn.setAttribute('aria-label', 'Mark as done');
+        doneBtn.title = 'Mark as done';
+        doneBtn.innerHTML = '<span class="material-icons">check_circle</span>';
+        doneBtn.addEventListener('click', () => updateTodoStatus(todo.id, 'done'));
+        actions.appendChild(doneBtn);
+    } else if (todo.status === 'in-progress') {
+        const todoBtn = document.createElement('button');
+        todoBtn.className = 'todo-action-button todo-action-todo';
+        todoBtn.setAttribute('aria-label', 'Mark as todo');
+        todoBtn.title = 'Mark as todo';
+        todoBtn.innerHTML = '<span class="material-icons">radio_button_unchecked</span>';
+        todoBtn.addEventListener('click', () => updateTodoStatus(todo.id, 'todo'));
+        actions.appendChild(todoBtn);
+
+        const doneBtn = document.createElement('button');
+        doneBtn.className = 'todo-action-button todo-action-done';
+        doneBtn.setAttribute('aria-label', 'Mark as done');
+        doneBtn.title = 'Mark as done';
+        doneBtn.innerHTML = '<span class="material-icons">check_circle</span>';
+        doneBtn.addEventListener('click', () => updateTodoStatus(todo.id, 'done'));
+        actions.appendChild(doneBtn);
+    } else if (todo.status === 'done') {
+        const todoBtn = document.createElement('button');
+        todoBtn.className = 'todo-action-button todo-action-todo';
+        todoBtn.setAttribute('aria-label', 'Mark as todo');
+        todoBtn.title = 'Mark as todo';
+        todoBtn.innerHTML = '<span class="material-icons">radio_button_unchecked</span>';
+        todoBtn.addEventListener('click', () => updateTodoStatus(todo.id, 'todo'));
+        actions.appendChild(todoBtn);
+
+        const inProgressBtn = document.createElement('button');
+        inProgressBtn.className = 'todo-action-button todo-action-in-progress';
+        inProgressBtn.setAttribute('aria-label', 'Mark as in progress');
+        inProgressBtn.title = 'Mark as in progress';
+        inProgressBtn.innerHTML = '<span class="material-icons">hourglass_empty</span>';
+        inProgressBtn.addEventListener('click', () => updateTodoStatus(todo.id, 'in-progress'));
+        actions.appendChild(inProgressBtn);
+    }
+
+    // Delete button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'todo-action-button todo-action-delete';
+    deleteBtn.setAttribute('aria-label', 'Delete todo');
+    deleteBtn.title = 'Delete';
+    deleteBtn.innerHTML = '<span class="material-icons">delete</span>';
+    deleteBtn.addEventListener('click', () => handleDeleteTodo(todo.id));
+    actions.appendChild(deleteBtn);
+
+    item.appendChild(text);
+    item.appendChild(actions);
+
+    return item;
 }
 
 // Initialize when DOM is ready

@@ -27,6 +27,10 @@
                     <span class="material-icons nav-icon">list</span>
                     <span class="nav-text">Event Log</span>
                 </button>
+                <button class="nav-button" data-page="todos" aria-label="Todos page">
+                    <span class="material-icons nav-icon">check_circle</span>
+                    <span class="nav-text">Todos</span>
+                </button>
                 <button class="nav-button" data-page="settings" aria-label="Settings page">
                     <span class="material-icons nav-icon">settings</span>
                     <span class="nav-text">Settings</span>
@@ -124,6 +128,75 @@
                             <!-- Table rows will be dynamically generated -->
                         </tbody>
                     </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- Todos Page -->
+        <div id="page-todos" class="page">
+            <section class="todos-section">
+                <h2 class="page-header">Todo List</h2>
+                
+                <!-- Add Todo Form -->
+                <div class="add-todo-wrapper">
+                    <form id="add-todo-form" class="add-todo-form">
+                        <input 
+                            id="new-todo-input" 
+                            type="text" 
+                            placeholder="Add a new todo..." 
+                            aria-label="New todo text" 
+                            required 
+                            maxlength="200"
+                        />
+                        <button type="submit" class="add-todo-button" aria-label="Add todo">
+                            <span class="material-icons">add</span>
+                            <span>Add</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Todo Filters -->
+                <div class="todo-filters">
+                    <button class="todo-filter-button active" data-filter="all" aria-label="Show all todos">All</button>
+                    <button class="todo-filter-button" data-filter="todo" aria-label="Show todo items">Todo</button>
+                    <button class="todo-filter-button" data-filter="in-progress" aria-label="Show in progress items">In Progress</button>
+                    <button class="todo-filter-button" data-filter="done" aria-label="Show completed items">Done</button>
+                </div>
+
+                <!-- Todo Lists -->
+                <div class="todos-container">
+                    <div class="todo-column" data-status="todo">
+                        <h3 class="todo-column-title">
+                            <span class="material-icons">radio_button_unchecked</span>
+                            Todo
+                            <span class="todo-count" id="todo-count">0</span>
+                        </h3>
+                        <div class="todo-list" id="todo-list-todo">
+                            <!-- Todo items will be dynamically generated -->
+                        </div>
+                    </div>
+
+                    <div class="todo-column" data-status="in-progress">
+                        <h3 class="todo-column-title">
+                            <span class="material-icons">hourglass_empty</span>
+                            In Progress
+                            <span class="todo-count" id="todo-count-in-progress">0</span>
+                        </h3>
+                        <div class="todo-list" id="todo-list-in-progress">
+                            <!-- In-progress items will be dynamically generated -->
+                        </div>
+                    </div>
+
+                    <div class="todo-column" data-status="done">
+                        <h3 class="todo-column-title">
+                            <span class="material-icons">check_circle</span>
+                            Done
+                            <span class="todo-count" id="todo-count-done">0</span>
+                        </h3>
+                        <div class="todo-list" id="todo-list-done">
+                            <!-- Done items will be dynamically generated -->
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>

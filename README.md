@@ -140,6 +140,21 @@ Then navigate to `http://localhost:8000` in your browser.
 - You can also close the dialog by clicking the X button, clicking outside the dialog, or pressing the Escape key
 - The dialog matches your current theme and includes smooth animations
 
+### Using as a Todo Tracker
+While Quirk Counter is designed for tracking quirky events, you can also use it as a simple todo tracker:
+1. **Create Todo Categories**: Use the Settings page to add custom categories like "Tasks Completed", "Goals Achieved", or "Daily Wins"
+2. **Track Progress**: Click the **"+"** button each time you complete a task or achieve a goal
+3. **Daily Reset**: Take advantage of the automatic daily reset to start fresh each day
+4. **View Analytics**: Check the Dashboard to see your productivity patterns and peak activity hours
+5. **Export Data**: Export your todo history to track long-term progress
+
+**Example Todo Categories:**
+- `tasks-done` - Tasks Completed
+- `goals-met` - Goals Achieved  
+- `habits-tracked` - Habits Maintained
+- `wins` - Daily Wins
+- `focus-sessions` - Focus Sessions Completed
+
 ## 🏗️ Project Structure
 
 ```
