@@ -175,7 +175,8 @@ const themes = {
 let state = {
     categories: [],
     theme: "dragon-dynasty",
-    events: [] // Array of { timestamp, categoryId, phrase }
+    events: [], // Array of { timestamp, categoryId, phrase }
+    lastResetDate: null // Date string (YYYY-MM-DD) when counts were last reset
 };
 
 // DOM elements
@@ -302,23 +303,55 @@ function renderCurrentPage() {
     }
 }
 
+// Get today's date as YYYY-MM-DD string
+function getTodayDateString() {
+    const today = new Date();
+    return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+}
+
 // Load state from localStorage
 function loadState() {
     const saved = localStorage.getItem("quirkCounterState");
+    const today = getTodayDateString();
+    
     if (saved) {
         try {
             const parsed = JSON.parse(saved);
             state.categories = parsed.categories || DEFAULT_CATEGORIES;
             state.theme = parsed.theme || "dragon-dynasty";
             state.events = parsed.events || [];
+            state.lastResetDate = parsed.lastResetDate || null;
+            
+            // Check if it's a new day - reset counts if needed
+            if (state.lastResetDate !== today) {
+                // Reset all category counts to 0
+                state.categories.forEach(category => {
+                    category.count = 0;
+                });
+                
+                // Recalculate counts from today's events to ensure accuracy
+                const todayEvents = getTodayEvents();
+                todayEvents.forEach(event => {
+                    const category = state.categories.find(cat => cat.id === event.categoryId);
+                    if (category) {
+                        category.count++;
+                    }
+                });
+                
+                state.lastResetDate = today;
+                // Save the reset state
+                saveState();
+            }
         } catch (e) {
             console.error("Error loading state:", e);
             state.categories = [...DEFAULT_CATEGORIES];
             state.events = [];
+            state.lastResetDate = today;
         }
     } else {
         state.categories = [...DEFAULT_CATEGORIES];
         state.events = [];
+        state.lastResetDate = today;
     }
 }
 
