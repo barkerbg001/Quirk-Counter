@@ -187,6 +187,12 @@ let addCategoryButton;
 let addCategoryForm;
 let newCategoryIdInput;
 let newCategoryNameInput;
+let customDialog;
+let dialogConfirmButton;
+let dialogCancelButton;
+let dialogCloseButton;
+let dialogMessage;
+let dialogResolve;
 
 // Initialize the application
 function init() {
@@ -223,6 +229,55 @@ function init() {
     addCategoryForm = document.getElementById('add-category-form');
     newCategoryIdInput = document.getElementById('new-category-id');
     newCategoryNameInput = document.getElementById('new-category-name');
+
+    // Set up custom dialog
+    customDialog = document.getElementById('custom-dialog');
+    dialogConfirmButton = document.getElementById('dialog-confirm');
+    dialogCancelButton = document.getElementById('dialog-cancel');
+    dialogCloseButton = document.querySelector('.dialog-close');
+    dialogMessage = document.getElementById('dialog-message');
+
+    // Dialog event listeners
+    if (dialogConfirmButton) {
+        dialogConfirmButton.addEventListener('click', () => {
+            hideDialog(true);
+        });
+    }
+
+    if (dialogCancelButton) {
+        dialogCancelButton.addEventListener('click', () => {
+            hideDialog(false);
+        });
+    }
+
+    if (dialogCloseButton) {
+        dialogCloseButton.addEventListener('click', () => {
+            hideDialog(false);
+        });
+    }
+
+    // Close dialog when clicking overlay (but not the content)
+    const dialogOverlay = document.querySelector('.dialog-overlay');
+    const dialogContent = document.querySelector('.dialog-content');
+    if (dialogOverlay && dialogContent) {
+        dialogOverlay.addEventListener('click', (e) => {
+            // Only close if clicking directly on the overlay, not the content
+            if (e.target === dialogOverlay) {
+                hideDialog(false);
+            }
+        });
+        // Prevent clicks inside dialog content from closing
+        dialogContent.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
+
+    // Close dialog on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && customDialog && customDialog.getAttribute('aria-hidden') === 'false') {
+            hideDialog(false);
+        }
+    });
 
     if (addCategoryButton && addCategoryForm) {
         addCategoryButton.addEventListener('click', () => {
@@ -665,13 +720,42 @@ function handleAddCategorySubmit(e) {
     hideAddCategoryForm();
 }
 
+// Show custom dialog
+function showDialog(message) {
+    return new Promise((resolve) => {
+        dialogResolve = resolve;
+        if (dialogMessage) {
+            dialogMessage.textContent = message;
+        }
+        if (customDialog) {
+            customDialog.setAttribute('aria-hidden', 'false');
+            // Focus the cancel button for accessibility
+            if (dialogCancelButton) {
+                setTimeout(() => dialogCancelButton.focus(), 100);
+            }
+        }
+    });
+}
+
+// Hide custom dialog
+function hideDialog(confirmed) {
+    if (customDialog) {
+        customDialog.setAttribute('aria-hidden', 'true');
+    }
+    if (dialogResolve) {
+        dialogResolve(confirmed);
+        dialogResolve = null;
+    }
+}
+
 // Delete category and associated events
-function handleDeleteCategory(categoryId) {
+async function handleDeleteCategory(categoryId) {
     const category = state.categories.find(c => c.id === categoryId);
     if (!category) return;
 
     const categoryName = getCategoryName(categoryId);
-    const confirmed = window.confirm(`Delete category "${categoryName}"? This will remove all associated events.`);
+    const confirmed = await showDialog(`Delete category "${categoryName}"? This will remove all associated events.`);
+    
     if (!confirmed) return;
 
     // Remove category

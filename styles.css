@@ -1755,3 +1755,262 @@ body[data-theme="neon-nexus"] .theme-option.active {
     }
 }
 
+/* ============================================
+   CUSTOM DIALOG STYLES
+   ============================================ */
+
+.custom-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none;
+}
+
+.custom-dialog[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+.dialog-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.dialog-content {
+    position: relative;
+    background: var(--card-background);
+    border: 2px solid var(--border);
+    border-radius: 24px;
+    padding: 0;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.4),
+        0 0 0 1px color-mix(in srgb, var(--border) 30%, transparent) inset,
+        0 0 40px color-mix(in srgb, var(--accent) 20%, transparent);
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow: hidden;
+    z-index: 1;
+}
+
+.custom-dialog[aria-hidden="false"] .dialog-content {
+    transform: scale(1) translateY(0);
+}
+
+.dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px;
+    border-bottom: 2px solid var(--border);
+    background: linear-gradient(135deg, var(--card-background) 0%, color-mix(in srgb, var(--card-background) 95%, var(--accent)) 100%);
+}
+
+.dialog-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dialog-title::before {
+    content: '⚠️';
+    font-size: 1.75rem;
+}
+
+.dialog-close {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+}
+
+.dialog-close:hover {
+    opacity: 1;
+    background: color-mix(in srgb, var(--accent) 15%, transparent);
+    transform: rotate(90deg);
+}
+
+.dialog-close:active {
+    transform: rotate(90deg) scale(0.95);
+}
+
+.dialog-body {
+    padding: 28px;
+}
+
+.dialog-body p {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text);
+    opacity: 0.9;
+}
+
+.dialog-actions {
+    display: flex;
+    gap: 12px;
+    padding: 20px 28px;
+    border-top: 2px solid var(--border);
+    background: color-mix(in srgb, var(--card-background) 98%, var(--text));
+    justify-content: flex-end;
+}
+
+.dialog-button {
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    min-width: 100px;
+}
+
+.dialog-button-cancel {
+    background: linear-gradient(135deg, #9E9E9E 0%, #757575 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(158, 158, 158, 0.3);
+}
+
+.dialog-button-cancel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(158, 158, 158, 0.4);
+    background: linear-gradient(135deg, #BDBDBD 0%, #9E9E9E 100%);
+}
+
+.dialog-button-cancel:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.dialog-button-confirm {
+    background: linear-gradient(135deg, #F44336 0%, #D32F2F 100%);
+    color: white;
+    box-shadow: 
+        0 4px 16px rgba(244, 67, 54, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+.dialog-button-confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 24px rgba(244, 67, 54, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+    background: linear-gradient(135deg, #EF5350 0%, #F44336 100%);
+}
+
+.dialog-button-confirm:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.dialog-button:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--accent) 50%, transparent);
+    outline-offset: 2px;
+}
+
+/* Theme-specific dialog styles */
+body[data-theme="dragon-dynasty"] .dialog-content {
+    background: linear-gradient(135deg, var(--card-background) 0%, color-mix(in srgb, var(--card-background) 98%, var(--lantern)) 100%);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.4),
+        0 0 0 1px color-mix(in srgb, var(--border) 30%, transparent) inset,
+        0 0 40px color-mix(in srgb, var(--lantern) 20%, transparent);
+}
+
+body[data-theme="dragon-dynasty"] .dialog-header {
+    background: linear-gradient(135deg, var(--card-background) 0%, color-mix(in srgb, var(--card-background) 95%, var(--accent)) 100%);
+}
+
+body[data-theme="neon-nexus"] .dialog-content {
+    background: rgba(15, 23, 42, 0.95);
+    border-color: rgba(34, 211, 238, 0.3);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(34, 211, 238, 0.2) inset,
+        0 0 40px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+body[data-theme="neon-nexus"] .dialog-header {
+    background: rgba(15, 23, 42, 0.98);
+    border-bottom-color: rgba(34, 211, 238, 0.2);
+}
+
+body[data-theme="neon-nexus"] .dialog-actions {
+    background: rgba(15, 23, 42, 0.98);
+    border-top-color: rgba(34, 211, 238, 0.2);
+}
+
+body[data-theme="forest-grove"] .dialog-content {
+    background: linear-gradient(135deg, var(--card-background) 0%, color-mix(in srgb, var(--card-background) 98%, var(--gold)) 100%);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.3),
+        0 0 0 1px color-mix(in srgb, var(--border) 30%, transparent) inset,
+        0 0 40px color-mix(in srgb, var(--gold) 15%, transparent);
+}
+
+body[data-theme="forest-grove"] .dialog-header {
+    background: linear-gradient(135deg, var(--card-background) 0%, color-mix(in srgb, var(--card-background) 95%, var(--accent)) 100%);
+}
+
+/* Responsive dialog */
+@media (max-width: 480px) {
+    .dialog-content {
+        width: 95%;
+        max-width: none;
+        border-radius: 20px;
+    }
+
+    .dialog-header {
+        padding: 20px 24px;
+    }
+
+    .dialog-title {
+        font-size: 1.25rem;
+    }
+
+    .dialog-body {
+        padding: 24px;
+    }
+
+    .dialog-body p {
+        font-size: 1rem;
+    }
+
+    .dialog-actions {
+        padding: 16px 24px;
+        flex-direction: column-reverse;
+    }
+
+    .dialog-button {
+        width: 100%;
+    }
+}
+

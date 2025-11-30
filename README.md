@@ -28,7 +28,8 @@ A delightful, feature-rich counter application with three distinct themes and co
 - **Multi-Page Navigation**: Navigate between Home, Dashboard, Event Log, and Settings pages
 - **Responsive Design**: Optimized for desktop, tablet, and mobile devices
 - **Custom Categories (UI)**: Create new categories from the Settings page using the `＋` button — new categories persist in localStorage
-- **Delete Categories**: Remove categories you no longer need via the delete button on each card. Deleting a category also deletes all events associated with it (a confirmation dialog appears first). Be cautious: deletions are permanent.
+- **Delete Categories**: Remove categories you no longer need via the delete button on each card. Deleting a category also deletes all events associated with it (a beautiful custom confirmation dialog appears first). Be cautious: deletions are permanent.
+- **Custom Dialog System**: Theme-aware confirmation dialogs replace default browser alerts with smooth animations and consistent styling
 - **Daily Reset**: All tallies automatically reset to 0 at the start of each new day
 
 ### 💾 Data Persistence
@@ -131,6 +132,13 @@ Then navigate to `http://localhost:8000` in your browser.
 - Click the **Export** button to download your events
 - Choose between JSON or CSV format (both are downloaded)
 - Files are automatically timestamped
+
+### Deleting Categories
+- Click the **delete button** (🗑️) on any category card
+- A custom confirmation dialog will appear with a warning message
+- Click **Delete** to confirm or **Cancel** to abort
+- You can also close the dialog by clicking the X button, clicking outside the dialog, or pressing the Escape key
+- The dialog matches your current theme and includes smooth animations
 
 ## 🏗️ Project Structure
 
@@ -235,6 +243,7 @@ Fully responsive design optimized for:
 - **CSS Custom Properties**: Dynamic theming system
 - **Smooth Animations**: CSS transitions and keyframe animations
 - **Accessibility**: ARIA labels, semantic HTML, keyboard navigation
+- **Custom Dialog System**: Promise-based dialog API with theme-aware styling
 - **No Dependencies**: Pure vanilla JavaScript, no frameworks required
 
 ## 📄 License
@@ -269,12 +278,18 @@ Give a ⭐️ if you like this project!
 - ➕ In-UI custom category creation (Settings page `＋` button)
 - 🗑️ Category deletion (deletes associated events; confirmation required)
 
-### Version 1.2.0 (Current)
+### Version 1.2.0
 - 🌲 Added Forest Grove theme
 - 📤 Export functionality (JSON and CSV)
 - 🔄 Daily automatic reset (tallies reset to 0 each day)
 - ➖ Decrement functionality on counter cards
 - 🧭 Multi-page navigation system (Home, Dashboard, Event Log, Settings)
+
+### Version 1.3.0 (Current)
+- 💬 Custom dialog system replacing default browser alerts
+- 🎨 Theme-aware dialog styling with smooth animations
+- ⌨️ Keyboard support (Escape key to close dialogs)
+- ♿ Enhanced accessibility with ARIA attributes
 
 ## 🔮 Future Enhancements
 
