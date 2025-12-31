@@ -58,8 +58,8 @@ A delightful, feature-rich counter application with three distinct themes and co
 ## 🚀 Getting Started
 
 ### Prerequisites
+- Node.js 16+ and npm (or yarn/pnpm)
 - A modern web browser (Chrome, Firefox, Safari, Edge)
-- No build tools or dependencies required!
 
 ### Installation
 
@@ -69,36 +69,31 @@ git clone https://github.com/barkerbg001/Quirk-Counter.git
 cd Quirk-Counter
 ```
 
-2. Open `index.html` in your web browser:
+2. Install dependencies:
 ```bash
-# On macOS
-open index.html
-
-# On Linux
-xdg-open index.html
-
-# On Windows
-start index.html
+npm install
 ```
 
-Or simply double-click the `index.html` file.
-
-### Using a Local Server (Optional)
-
-For the best experience, you can serve the files using a local web server:
-
+3. Start the development server:
 ```bash
-# Using Python 3
-python -m http.server 8000
-
-# Using Node.js (http-server)
-npx http-server
-
-# Using PHP
-php -S localhost:8000
+npm run dev
 ```
 
-Then navigate to `http://localhost:8000` in your browser.
+The app will be available at `http://localhost:5173` (or the port Vite assigns).
+
+### Building for Production
+
+To create a production build:
+
+```bash
+npm run build
+```
+
+The built files will be in the `dist` directory. You can preview the production build with:
+
+```bash
+npm run preview
+```
 
 ## 📖 Usage
 
@@ -171,9 +166,29 @@ Navigate to the **Todos** page to manage your tasks:
 
 ```
 Quirk-Counter/
-├── index.html          # Main HTML structure
-├── styles.css          # Complete styling with theme system
-├── script.js           # Application logic and state management
+├── index.html          # Main HTML entry point
+├── vite.config.js      # Vite configuration
+├── package.json        # Dependencies and scripts
+├── src/
+│   ├── main.jsx        # React entry point
+│   ├── App.jsx         # Main App component
+│   ├── index.css       # Global styles and theme system
+│   ├── components/      # Reusable components
+│   │   ├── Header.jsx
+│   │   ├── CategoryCard.jsx
+│   │   ├── ToastContainer.jsx
+│   │   └── Dialog.jsx
+│   ├── pages/          # Page components
+│   │   ├── Home.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── EventLog.jsx
+│   │   ├── Todos.jsx
+│   │   └── Settings.jsx
+│   ├── hooks/          # Custom React hooks
+│   │   └── useAppState.js
+│   └── utils/          # Utility functions
+│       ├── constants.js
+│       └── storage.js
 └── README.md           # Project documentation
 ```
 
@@ -256,15 +271,18 @@ Fully responsive design optimized for:
 
 ## 🛠️ Technologies Used
 
+- **React 18**: Modern React with hooks for component-based architecture
+- **Vite**: Fast build tool and development server
 - **HTML5**: Semantic markup with ARIA labels for accessibility
 - **CSS3**: Modern features including CSS Grid, Flexbox, custom properties, gradients, and animations
-- **JavaScript (ES6+)**: Vanilla JavaScript with modern syntax
+- **JavaScript (ES6+)**: Modern JavaScript with React patterns
 - **Local Storage API**: Client-side data persistence
 - **SVG**: Vector graphics for line charts
 
 ## 🎯 Key Technical Features
 
-- **State Management**: Centralized state with localStorage persistence
+- **React Hooks**: Custom hooks for state management (useState, useEffect)
+- **State Management**: Centralized state with localStorage persistence via custom hook
 - **Event System**: Custom event tracking with timestamps
 - **Responsive Grid Layouts**: CSS Grid and Flexbox for adaptive layouts
 - **CSS Custom Properties**: Dynamic theming system
@@ -272,7 +290,8 @@ Fully responsive design optimized for:
 - **Accessibility**: ARIA labels, semantic HTML, keyboard navigation
 - **Custom Dialog System**: Promise-based dialog API with theme-aware styling
 - **Todo List Management**: Kanban-style todo board with status tracking and filtering
-- **No Dependencies**: Pure vanilla JavaScript, no frameworks required
+- **Component-Based Architecture**: Modular React components for maintainability
+- **Fast Development**: Vite for instant HMR and optimized builds
 
 ## 📄 License
 
