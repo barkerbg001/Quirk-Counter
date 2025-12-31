@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense, useCallback } from 'react';
+import { useState, lazy, Suspense, useCallback, useEffect } from 'react';
 import { useAppState } from './hooks/useAppState';
 import { AppProvider, useApp } from './context/AppContext';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
@@ -74,6 +74,52 @@ function AppContent() {
                 return <About {...pageProps} />;
         }
     };
+
+    // Update document title and meta description based on current page
+    useEffect(() => {
+        const pageMeta = {
+            'about': {
+                title: 'About - Quirk Counter',
+                description: 'Learn about Quirk Counter - a modern event tracking application with beautiful themes, analytics, and more.'
+            },
+            'home': {
+                title: 'Home - Quirk Counter',
+                description: 'Track your quirky events with customizable categories. Start counting and tracking your habits today.'
+            },
+            'dashboard': {
+                title: 'Analytics Dashboard - Quirk Counter',
+                description: 'View comprehensive analytics, charts, and insights about your tracked events and habits.'
+            },
+            'event-log': {
+                title: 'Event Log - Quirk Counter',
+                description: 'Browse and search through all your tracked events with detailed timestamps and categories.'
+            },
+            'todos': {
+                title: 'Todos - Quirk Counter',
+                description: 'Manage your tasks with the built-in Kanban board. Organize and track your todos efficiently.'
+            },
+            'settings': {
+                title: 'Settings - Quirk Counter',
+                description: 'Customize your Quirk Counter experience with themes, categories, and preferences.'
+            }
+        };
+
+        const meta = pageMeta[currentPage] || {
+            title: 'Quirk Counter',
+            description: 'A modern, feature-rich event tracking application.'
+        };
+
+        document.title = meta.title;
+        
+        // Update meta description
+        let metaDescription = document.querySelector('meta[name="description"]');
+        if (!metaDescription) {
+            metaDescription = document.createElement('meta');
+            metaDescription.setAttribute('name', 'description');
+            document.head.appendChild(metaDescription);
+        }
+        metaDescription.setAttribute('content', meta.description);
+    }, [currentPage]);
 
     return (
         <div className="app-layout">

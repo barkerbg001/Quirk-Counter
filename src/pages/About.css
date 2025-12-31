@@ -375,6 +375,51 @@
     transform: scale(1.2) rotate(5deg);
 }
 
+/* Repo Section */
+.repo-section {
+    background: linear-gradient(135deg, 
+        var(--card-background) 0%, 
+        color-mix(in srgb, var(--card-background) 95%, var(--accent)) 100%);
+    border-color: var(--accent);
+}
+
+.repo-link-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.repo-link-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 85%, var(--text)) 100%);
+    color: white;
+    text-decoration: none;
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: var(--font-family);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.repo-link-button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 32px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+.repo-link-button .material-icons {
+    font-size: 1.3rem;
+}
+
+.repo-link-button .material-icons:last-child {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .hero-title {

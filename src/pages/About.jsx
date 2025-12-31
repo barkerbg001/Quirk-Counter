@@ -202,6 +202,26 @@ function About({ onNavigate }) {
                     </button>
                 </div>
             </div>
+
+            <div className="about-section repo-section">
+                <h2 className="section-title">Open Source</h2>
+                <p className="section-description">
+                    Quirk Counter is open source and available on GitHub. 
+                    Feel free to contribute, report issues, or fork the project!
+                </p>
+                <div className="repo-link-container">
+                    <a 
+                        href="https://github.com/barkerbg001/Quirk-Counter"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="repo-link-button"
+                    >
+                        <span className="material-icons">code</span>
+                        <span>View on GitHub</span>
+                        <span className="material-icons">open_in_new</span>
+                    </a>
+                </div>
+            </div>
         </div>
     );
 }
