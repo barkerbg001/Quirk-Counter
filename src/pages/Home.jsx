@@ -38,6 +38,14 @@ function Home({ appState, showToast, showDialog }) {
 
     return (
         <div className="page active">
+            <div className="page-header-hero">
+                <div className="page-header-hero-content">
+                    <h1 className="page-header">Home</h1>
+                    <p className="page-header-subtitle">
+                        Track your quirky events with customizable categories. Click the + button to increment counters.
+                    </p>
+                </div>
+            </div>
             <div className="cards-container">
                 {appState.categories.map(category => (
                     <CategoryCard

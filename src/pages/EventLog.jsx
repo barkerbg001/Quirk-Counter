@@ -112,7 +112,14 @@ function EventLog({ appState }) {
     return (
         <div className="page active">
             <section className="event-log-section">
-                <h2 className="page-header">Event Log</h2>
+                <div className="page-header-hero">
+                    <div className="page-header-hero-content">
+                        <h1 className="page-header">Event Log</h1>
+                        <p className="page-header-subtitle">
+                            Browse and search through all your tracked events with detailed timestamps and categories.
+                        </p>
+                    </div>
+                </div>
                 <div className="event-log-actions">
                     <input
                         type="text"

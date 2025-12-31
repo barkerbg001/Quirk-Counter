@@ -160,8 +160,10 @@ function Dashboard({ appState }) {
         <div className="page active">
             <section className="dashboard-section">
                 <div className="dashboard-header-container">
-                    <h2 className="dashboard-header">Analytics Dashboard</h2>
-                    <div className="dashboard-subtitle">Real-time insights and statistics</div>
+                    <div className="page-header-hero-content">
+                        <h1 className="dashboard-header">Analytics Dashboard</h1>
+                        <p className="dashboard-subtitle">Insights into your quirky events</p>
+                    </div>
                 </div>
                 
                 {/* Main KPI Cards */}

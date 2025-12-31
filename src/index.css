@@ -332,13 +332,58 @@ body[data-theme="ruby-sea"] .minus-button:hover:not(:disabled) {
     display: block;
 }
 
-.page-header {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--accent);
+/* Page Header Hero Style (matching About page) */
+.page-header-hero {
     text-align: center;
+    padding: 50px 20px;
     margin-bottom: 40px;
+    background: linear-gradient(135deg, 
+        var(--card-background) 0%, 
+        color-mix(in srgb, var(--card-background) 95%, var(--accent)) 100%);
+    border-radius: 24px;
+    border: 2px solid var(--border);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.page-header-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, 
+        color-mix(in srgb, var(--accent) 10%, transparent) 0%, 
+        transparent 70%);
+    animation: pulse 8s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.page-header-hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.page-header {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 70%, var(--text)) 50%, var(--accent) 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.page-header-subtitle {
+    font-size: 1.1rem;
+    color: color-mix(in srgb, var(--text) 80%, transparent);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
 }
 
 /* Settings Page */
@@ -1203,8 +1248,19 @@ body[data-theme="forest-grove"] .theme-option.active {
         padding: 24px;
     }
 
-    .page-header {
+    .page-header,
+    .dashboard-header {
         font-size: 2rem;
+    }
+
+    .page-header-hero,
+    .dashboard-header-container {
+        padding: 40px 16px;
+    }
+
+    .page-header-subtitle,
+    .dashboard-subtitle {
+        font-size: 1rem;
     }
 }
 
@@ -1288,21 +1344,52 @@ body[data-theme="forest-grove"] .theme-option.active {
 
 .dashboard-header-container {
     text-align: center;
-    margin-bottom: 48px;
+    padding: 50px 20px;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, 
+        var(--card-background) 0%, 
+        color-mix(in srgb, var(--card-background) 95%, var(--accent)) 100%);
+    border-radius: 24px;
+    border: 2px solid var(--border);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-header-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, 
+        color-mix(in srgb, var(--accent) 10%, transparent) 0%, 
+        transparent 70%);
+    animation: pulse 8s ease-in-out infinite;
+    pointer-events: none;
 }
 
 .dashboard-header {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 700;
-    color: var(--accent);
-    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 70%, var(--text)) 50%, var(--accent) 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
 }
 
 .dashboard-subtitle {
     font-size: 1.1rem;
-    color: color-mix(in srgb, var(--text) 70%, transparent);
+    color: color-mix(in srgb, var(--text) 80%, transparent);
     font-weight: 400;
+    position: relative;
+    z-index: 1;
 }
 
 /* KPI Cards */
@@ -2105,8 +2192,19 @@ body[data-theme="forest-grove"] .theme-option.active {
         padding: 20px 0;
     }
 
-    .dashboard-header {
+    .dashboard-header,
+    .page-header {
         font-size: 1.75rem;
+    }
+
+    .page-header-hero,
+    .dashboard-header-container {
+        padding: 32px 16px;
+    }
+
+    .page-header-subtitle,
+    .dashboard-subtitle {
+        font-size: 0.95rem;
     }
 
     .kpi-grid {

@@ -84,7 +84,14 @@ function Todos({ appState, showToast, showDialog }) {
     return (
         <div className="page active">
             <section className="todos-section">
-                <h2 className="page-header">Todo List</h2>
+                <div className="page-header-hero">
+                    <div className="page-header-hero-content">
+                        <h1 className="page-header">Todo List</h1>
+                        <p className="page-header-subtitle">
+                            Manage your tasks with the built-in Kanban board. Drag and drop to organize your todos.
+                        </p>
+                    </div>
+                </div>
                 
                 <div className="add-todo-wrapper">
                     <form className="add-todo-form" onSubmit={handleAddTodo}>

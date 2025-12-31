@@ -61,7 +61,14 @@ function Settings({ appState, showToast, showDialog }) {
     return (
         <div className="page active">
             <section className="settings-section">
-                <h2 className="page-header">Settings</h2>
+                <div className="page-header-hero">
+                    <div className="page-header-hero-content">
+                        <h1 className="page-header">Settings</h1>
+                        <p className="page-header-subtitle">
+                            Customize your Quirk Counter experience with themes, categories, and preferences.
+                        </p>
+                    </div>
+                </div>
                 
                 <div className="settings-group">
                     <h3 className="settings-title">Theme</h3>
