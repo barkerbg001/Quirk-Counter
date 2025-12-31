@@ -1,80 +1,107 @@
-# Quirk Counter 🐉
+<div align="center">
+  <img src="src/assets/logo.png" alt="Quirk Counter Logo" width="120" height="120">
+  
+  # Quirk Counter 🐉
 
-A delightful, feature-rich counter application with three distinct themes and comprehensive analytics. Track quirky events with style through multiple visual experiences: Dragon Dynasty (Chinese restaurant theme), Neon Nexus (cyberpunk theme), and Forest Grove (nature-inspired theme).
+  A modern, feature-rich event tracking application built with React and Vite. Track quirky events with style through multiple beautiful themes, comprehensive analytics, and an intuitive interface.
+
+  ![Quirk Counter](https://img.shields.io/badge/React-18.2.0-blue) ![Vite](https://img.shields.io/badge/Vite-5.0.8-purple) ![License](https://img.shields.io/badge/License-MIT-green)
+</div>
 
 ## ✨ Features
 
 ### 🎨 Theme System
-- **Dragon Dynasty**: Chinese restaurant-inspired theme with warm golds, reds, and elegant fonts
-- **Neon Nexus**: Cyberpunk-inspired theme with neon blues, dark backgrounds, and monospace fonts
-- **Forest Grove**: Nature-inspired theme with forest greens, earthy tones, and organic aesthetics
-- Smooth theme transitions with custom animations and effects
+- **Dragon Dynasty** 🐉: Chinese restaurant-inspired theme with warm golds, reds, and elegant fonts
+- **Neon Nexus** ⚡: Cyberpunk-inspired theme with neon blues, dark backgrounds, and monospace fonts
+- **Forest Grove** 🌲: Nature-inspired theme with forest greens, earthy tones, and organic aesthetics
+- **Ruby Sea** 💎: Oceanic theme with coral reds and deep blues
+- Smooth theme transitions with custom animations
 - Theme-specific icons, phrases, and color schemes
+- **Dynamic Logo Tinting**: Logo automatically adapts to match the current theme
 
-### 📊 Analytics Dashboard
-- **KPI Cards**: Real-time metrics including total events, category totals, most active category, and peak hour
-- **Daily Summary**: Today's event count, first/last event times, and manager's notes
+### 🧭 Navigation
+- **Collapsible Sidebar**: Modern sidebar navigation that can expand/collapse
+- **Logo Integration**: Clickable logo that toggles sidebar (desktop) or navigates home (double-click)
+- **Mobile Menu**: Slide-out menu for mobile devices with overlay backdrop
+- **Keyboard Shortcuts**: Full keyboard navigation support
+  - `H` - Home
+  - `D` - Dashboard
+  - `E` - Event Log
+  - `T` - Todos
+  - `S` - Settings
+  - `Ctrl+/` - Show shortcuts
+- **State Persistence**: Sidebar collapse state saved to localStorage
+
+### 📊 Enhanced Analytics Dashboard
+- **KPI Cards with Icons**: Visual metrics with Material Icons
+  - Total Events (primary card with trend indicators)
+  - Today's Events with comparison
+  - Peak Hour with event count
+  - Most Active Category
+- **Trend Indicators**: Visual up/down arrows showing day-over-day trends
+- **Dynamic Category KPIs**: Grid of all categories with totals and today's counts
+- **Daily Summary**: Enhanced summary card with icons and detailed metrics
 - **Category Breakdown**: Visual percentage breakdown with animated progress bars
-- **Bar Chart**: Compare event counts across all categories
-- **Line Chart**: Visualize events distribution throughout the day (24-hour view)
-- **Event Log Table**: Sortable table showing timestamp, category, and custom phrases
+- **Interactive Charts**:
+  - Bar Chart: Compare event counts across categories with hover tooltips
+  - Line Chart: 24-hour event distribution with gradient fill
+- **Manager's Notes**: Theme-aware contextual notes based on activity
 
-### 🔄 Interactive Features
-- **Counter Cards**: Five default categories (Burps, Farts, Bugs, Coffee, Sass) with customizable counts
-- **Increment/Decrement**: Add or remove entries with `+` and `−` buttons on each card
-- **Toast Notifications**: Elegant toast messages with random contextual phrases
-- **Pulse Animations**: Visual feedback when incrementing counters
-- **Hover Effects**: Smooth transitions and hover states throughout the UI
-- **Multi-Page Navigation**: Navigate between Home, Dashboard, Event Log, Todos, and Settings pages
-- **Todo List System**: Full-featured todo list with three status columns (Todo, In Progress, Done) and filtering capabilities
-- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **Custom Categories (UI)**: Create new categories from the Settings page using the `＋` button — new categories persist in localStorage
-- **Delete Categories**: Remove categories you no longer need via the delete button on each card. Deleting a category also deletes all events associated with it (a beautiful custom confirmation dialog appears first). Be cautious: deletions are permanent.
-- **Custom Dialog System**: Theme-aware confirmation dialogs replace default browser alerts with smooth animations and consistent styling
-- **Daily Reset**: All tallies automatically reset to 0 at the start of each new day
+### 🏠 Home Page
+- **Counter Cards**: Dynamic category cards with increment/decrement
+- **Pulse Animations**: Visual feedback when incrementing
+- **Delete Categories**: Remove categories with confirmation dialog
+- **Custom Categories**: Create new categories on the fly
+- **Theme-Aware Styling**: All cards adapt to current theme
 
-### ✅ Todo List Features
-- **Three-Column Kanban Board**: Organize todos into Todo, In Progress, and Done columns
-- **Status Management**: Easily move todos between statuses with intuitive action buttons
+### 📋 Event Log
+- **Real-Time Search**: Filter events by category, phrase, timestamp, or ID
+- **Sortable Table**: Click column headers to sort by timestamp or category
+- **Result Count**: See how many events match your search
+- **Export Functionality**: Download events as JSON and CSV
+- **Responsive Design**: Works seamlessly on all screen sizes
+
+### ✅ Todo List
+- **Kanban Board**: Three-column layout (Todo, In Progress, Done)
+- **Status Management**: Drag-and-drop or button-based status changes
 - **Filtering**: Filter todos by status (All, Todo, In Progress, Done)
-- **Count Badges**: See at a glance how many items are in each column
-- **Delete Functionality**: Remove todos with custom confirmation dialog
-- **Theme Integration**: Todo list styling adapts to all three themes
-- **Persistent Storage**: All todos saved to localStorage
+- **Count Badges**: See item counts in each column
+- **Modern Input**: Centered, card-style input form
+- **Persistent Storage**: All todos saved automatically
 
-### 💾 Data Persistence
-- Local storage integration for saving state across sessions
-- Persistent theme preferences
-- Event history tracking with timestamps
-- Category counts and event log retention
-- Todo list persistence
-- Automatic daily reset tracking
+### ⚙️ Settings
+- **Theme Selection**: Switch between four beautiful themes
+- **Category Management**: Add and delete custom categories
+- **Validation**: Category ID validation (lowercase, alphanumeric, dashes, underscores)
+- **Real-Time Updates**: Changes apply immediately
 
-### 📤 Data Export
-- **Export Events**: Download your event history as JSON or CSV files
-- Export button available in the Event Log page
-- Timestamped filenames for easy organization
+### 💾 Data Management
+- **LocalStorage Persistence**: All data saved automatically
+- **Debounced Saves**: Optimized write operations (500ms debounce)
+- **Daily Reset**: Automatic count reset at midnight
+- **Data Export**: JSON and CSV export options
+- **Backward Compatible**: Existing data preserved during updates
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 16+ and npm (or yarn/pnpm)
+- **Node.js** 16+ and npm (or yarn/pnpm)
 - A modern web browser (Chrome, Firefox, Safari, Edge)
 
 ### Installation
 
-1. Clone the repository:
+1. **Clone the repository:**
 ```bash
 git clone https://github.com/barkerbg001/Quirk-Counter.git
 cd Quirk-Counter
 ```
 
-2. Install dependencies:
+2. **Install dependencies:**
 ```bash
 npm install
 ```
 
-3. Start the development server:
+3. **Start the development server:**
 ```bash
 npm run dev
 ```
@@ -83,196 +110,157 @@ The app will be available at `http://localhost:5173` (or the port Vite assigns).
 
 ### Building for Production
 
-To create a production build:
-
+**Create a production build:**
 ```bash
 npm run build
 ```
 
-The built files will be in the `dist` directory. You can preview the production build with:
+The built files will be in the `dist` directory.
 
+**Preview the production build:**
 ```bash
 npm run preview
 ```
 
-## 📖 Usage
-
-### Adding Events
-1. Click the **"+"** button on any category card
-2. Watch the counter increment with a pulse animation
-3. Receive a random contextual phrase in a toast notification
-4. View the event appear in the analytics dashboard
-
-### Removing Events
-- Click the **"−"** button on any category card to decrement the count
-- The most recent event for that category will be removed
-- The button is disabled when the count is 0
+## 📖 Usage Guide
 
 ### Navigation
-- Use the navigation buttons in the header to switch between pages:
-  - **Home**: View and interact with counter cards
-  - **Dashboard**: View analytics and visualizations
-  - **Event Log**: Browse all events in a sortable table
-  - **Todos**: Manage your todo list with status tracking
-  - **Settings**: Change theme and manage categories
+- **Desktop**: Click the logo to collapse/expand the sidebar, or double-click to go home
+- **Mobile**: Use the hamburger menu button (top-left) to open the sidebar
+- **Keyboard**: Use `H`, `D`, `E`, `T`, `S` keys for quick navigation
 
-### Switching Themes
-- Navigate to the **Settings** page
-- Click on any theme option:
-  - 🐉 **Dragon Dynasty**: Chinese restaurant theme
-  - ⚡ **Neon Nexus**: Cyberpunk theme
-  - 🌲 **Forest Grove**: Nature theme
-- Watch the entire interface smoothly transition to the new theme
+### Adding Events
+1. Navigate to **Home** page
+2. Click the **"+"** button on any category card
+3. Watch the counter increment with a pulse animation
+4. Receive a random contextual phrase in a toast notification
+5. View the event appear in the analytics dashboard
 
 ### Viewing Analytics
-- Navigate to the **Dashboard** page
-- Explore various visualizations and metrics:
-  - KPI cards with real-time statistics
+- Navigate to **Dashboard** to see:
+  - Real-time KPI metrics with trend indicators
+  - Category breakdowns and percentages
+  - Interactive bar and line charts
   - Daily summary with manager's notes
-  - Category breakdown with percentages
-  - Bar and line charts
-- Sort the event table by clicking column headers (Timestamp or Category)
-- View real-time updates as you add new events
+
+### Managing Categories
+- **Add**: Go to Settings → Click `＋` → Enter ID and name → Create
+- **Delete**: Click the delete button on any category card → Confirm
+- **Note**: Deleting a category removes all associated events
+
+### Using Todos
+- **Add**: Type in the centered input field and press Enter
+- **Change Status**: Use action buttons on each todo item
+- **Filter**: Click filter buttons to view specific statuses
+- **Delete**: Click delete button (confirmation required)
 
 ### Searching Events
-- Navigate to the **Event Log** page
-- Use the search bar to filter events in real-time
-- Search across category names, phrases, timestamps, or category IDs
-- View the result count to see how many events match your search
+- Navigate to **Event Log**
+- Type in the search bar to filter in real-time
+- Search works across categories, phrases, timestamps, and IDs
 
 ### Exporting Data
-- Navigate to the **Event Log** page
-- Click the **Export** button to download your events
-- Choose between JSON or CSV format (both are downloaded)
-- Files are automatically timestamped
-
-### Keyboard Shortcuts
-- Press `H` to go to Home
-- Press `D` to go to Dashboard
-- Press `E` to go to Event Log
-- Press `T` to go to Todos
-- Press `S` to go to Settings
-- Press `Ctrl+/` (or `Cmd+/` on Mac) to see all available shortcuts
-
-### Deleting Categories
-- Click the **delete button** (🗑️) on any category card
-- A custom confirmation dialog will appear with a warning message
-- Click **Delete** to confirm or **Cancel** to abort
-- You can also close the dialog by clicking the X button, clicking outside the dialog, or pressing the Escape key
-- The dialog matches your current theme and includes smooth animations
-
-### Managing Your Todo List
-Navigate to the **Todos** page to manage your tasks:
-1. **Add a Todo**: Type your task in the input field and click **Add**
-2. **Change Status**: Use the action buttons on each todo item:
-   - From **Todo**: Move to In Progress or mark as Done
-   - From **In Progress**: Move back to Todo or mark as Done
-   - From **Done**: Move back to Todo or In Progress
-3. **Filter Todos**: Click filter buttons (All, Todo, In Progress, Done) to view specific statuses
-4. **Delete Todos**: Click the delete button (🗑️) on any todo item to remove it (confirmation required)
-5. **View Counts**: See how many items are in each column with the count badges
-
-**Todo Status Flow:**
-- **Todo** → **In Progress** → **Done**
-- You can move items in any direction between these statuses
+- Go to **Event Log** page
+- Click **Export** button
+- Both JSON and CSV files are downloaded automatically
 
 ## 🏗️ Project Structure
 
 ```
 Quirk-Counter/
-├── index.html          # Main HTML entry point
-├── vite.config.js      # Vite configuration
-├── package.json        # Dependencies and scripts
+├── index.html              # Main HTML entry point
+├── vite.config.js          # Vite configuration
+├── package.json            # Dependencies and scripts
 ├── src/
-│   ├── main.jsx        # React entry point
-│   ├── App.jsx         # Main App component
-│   ├── index.css       # Global styles and theme system
-│   ├── components/     # Reusable components
-│   │   ├── Header.jsx
+│   ├── main.jsx            # React entry point
+│   ├── App.jsx             # Main App component with routing
+│   ├── index.css           # Global styles and theme system
+│   ├── assets/
+│   │   └── logo.png        # Application logo
+│   ├── components/         # Reusable components
+│   │   ├── Sidebar.jsx     # Collapsible sidebar navigation
 │   │   ├── CategoryCard.jsx
 │   │   ├── ToastContainer.jsx
 │   │   ├── Dialog.jsx
 │   │   ├── ErrorBoundary.jsx
 │   │   └── LoadingSpinner.jsx
-│   ├── pages/          # Page components
+│   ├── pages/              # Page components
 │   │   ├── Home.jsx
-│   │   ├── Dashboard.jsx
+│   │   ├── Dashboard.jsx   # Enhanced analytics dashboard
 │   │   ├── EventLog.jsx
 │   │   ├── Todos.jsx
 │   │   └── Settings.jsx
-│   ├── hooks/          # Custom React hooks
-│   │   ├── useAppState.js
-│   │   ├── useDebounce.js
+│   ├── hooks/              # Custom React hooks
+│   │   ├── useAppState.js  # Main state management
+│   │   ├── useDebounce.js  # Debouncing utilities
 │   │   └── useKeyboardShortcuts.js
-│   ├── context/        # React Context providers
-│   │   └── AppContext.jsx
-│   └── utils/          # Utility functions
-│       ├── constants.js
-│       └── storage.js
-└── README.md           # Project documentation
+│   ├── context/           # React Context providers
+│   │   └── AppContext.jsx  # Global state (toasts, dialogs)
+│   └── utils/              # Utility functions
+│       ├── constants.js    # Themes and default categories
+│       └── storage.js      # LocalStorage utilities
+└── README.md
 ```
 
 ## 🎨 Themes
 
 ### Dragon Dynasty 🐉
-A Chinese restaurant-inspired theme featuring:
 - Rich red background (#B71C1C)
 - Golden accents (#D4AF37)
 - Jade green highlights (#2E7D32)
 - Lantern yellow tones (#FFE082)
 - Elegant serif font (Noto Serif SC)
-- Restaurant-themed phrases and terminology
+- Restaurant-themed phrases
 
 ### Neon Nexus ⚡
-A cyberpunk-inspired theme featuring:
 - Deep space background (#020617)
 - Cyan neon accents (#22d3ee)
 - Dark card surfaces (#0f172a)
 - Monospace font (JetBrains Mono)
-- Tech-themed phrases and terminology
+- Tech-themed phrases
 
 ### Forest Grove 🌲
-A nature-inspired theme featuring:
 - Forest green background (#1B4332)
 - Light card surfaces (#F0F7F4)
 - Earthy green accents (#52B788)
-- Natural color palette with jade and mint tones
-- Nature-themed phrases and terminology
+- Natural color palette
+- Nature-themed phrases
 
-## 💡 Customization
+### Ruby Sea 💎
+- Oceanic blue background
+- Coral red accents
+- Deep sea tones
+- Ocean-themed phrases
 
-### Adding New Categories
-You can add categories in two ways:
+## 🛠️ Technologies
 
-- **Quick (UI)**: Navigate to the Settings page, click the `＋` button, enter an id (lowercase, no spaces, only `a-z0-9_-`) and a display name, then click `Create`. The new category is stored in localStorage and immediately appears in the UI.
+- **React 18**: Modern React with hooks and component-based architecture
+- **Vite 5**: Lightning-fast build tool and dev server
+- **CSS3**: Modern features (Grid, Flexbox, Custom Properties, Animations)
+- **LocalStorage API**: Client-side data persistence
+- **SVG**: Vector graphics for charts
 
-- **Source (code)**: Edit the `DEFAULT_CATEGORIES` array in `src/utils/constants.js` if you want a category to ship by default:
+## 🎯 Key Features
 
-```javascript
-export const DEFAULT_CATEGORIES = [
-    { id: "burp", name: "Burps", count: 0 },
-    { id: "fart", name: "Farts", count: 0 },
-    { id: "bug", name: "Bugs Introduced", count: 0 },
-    { id: "coffee", name: "Coffee Consumed", count: 0 },
-    { id: "sass", name: "Sass", count: 0 }
-];
-```
+### Performance
+- ⚡ **Lazy Loading**: Pages loaded on-demand for faster initial load
+- 🎯 **Debounced Saves**: Optimized localStorage writes (500ms delay)
+- 🧠 **Memoization**: React.memo and useMemo for performance
+- 📦 **Code Splitting**: Automatic code splitting with React.lazy
 
-### Adding Custom Phrases
-Add phrases to the theme object in `src/utils/constants.js`:
+### User Experience
+- ⌨️ **Keyboard Shortcuts**: Full keyboard navigation
+- 🔍 **Real-Time Search**: Instant filtering in Event Log
+- 📱 **Responsive Design**: Works on all devices
+- 🎨 **Smooth Animations**: Polished transitions throughout
+- ♿ **Accessibility**: ARIA labels, semantic HTML, keyboard support
 
-```javascript
-phrases: {
-    burp: [
-        "Your custom phrase here!",
-        "Another clever phrase",
-        "A third option"
-    ]
-}
-```
-
-### Creating a New Theme
-Extend the `themes` object in `src/utils/constants.js` with your custom theme configuration.
+### Architecture
+- 🏗️ **Component-Based**: Modular, reusable React components
+- 🔄 **Context API**: Global state management
+- 🎣 **Custom Hooks**: Reusable logic (useAppState, useDebounce, etc.)
+- 🛡️ **Error Boundaries**: Graceful error handling
+- 📝 **Clean Code**: Well-organized, maintainable structure
 
 ## 🌐 Browser Support
 
@@ -289,33 +277,73 @@ Fully responsive design optimized for:
 - 💻 Laptops (1024px+)
 - 🖥️ Desktop screens (1440px+)
 
-## 🛠️ Technologies Used
+## 💡 Customization
 
-- **React 18**: Modern React with hooks for component-based architecture
-- **Vite**: Fast build tool and development server
-- **HTML5**: Semantic markup with ARIA labels for accessibility
-- **CSS3**: Modern features including CSS Grid, Flexbox, custom properties, gradients, and animations
-- **JavaScript (ES6+)**: Modern JavaScript with React patterns
-- **Local Storage API**: Client-side data persistence
-- **SVG**: Vector graphics for line charts
+### Adding Categories
+Navigate to **Settings** → Click `＋` → Enter:
+- **ID**: Lowercase, alphanumeric, dashes, underscores only
+- **Name**: Display name for the category
 
-## 🎯 Key Technical Features
+### Adding Custom Phrases
+Edit `src/utils/constants.js`:
+```javascript
+phrases: {
+    yourCategory: [
+        "Custom phrase 1",
+        "Custom phrase 2"
+    ]
+}
+```
 
-- **React Hooks**: Custom hooks for state management (useState, useEffect, useCallback, useMemo)
-- **State Management**: Centralized state with localStorage persistence via custom hook
-- **Event System**: Custom event tracking with timestamps
-- **Responsive Grid Layouts**: CSS Grid and Flexbox for adaptive layouts
-- **CSS Custom Properties**: Dynamic theming system
-- **Smooth Animations**: CSS transitions and keyframe animations
-- **Accessibility**: ARIA labels, semantic HTML, keyboard navigation
-- **Custom Dialog System**: Promise-based dialog API with theme-aware styling
-- **Todo List Management**: Kanban-style todo board with status tracking and filtering
-- **Component-Based Architecture**: Modular React components for maintainability
-- **Fast Development**: Vite for instant HMR and optimized builds
-- **Performance Optimized**: Debounced localStorage saves, lazy loading, React.memo
-- **Error Handling**: Error boundaries for graceful error recovery
-- **Search Functionality**: Real-time search in Event Log
-- **Keyboard Shortcuts**: Full keyboard navigation support
+### Creating Themes
+Extend the `themes` object in `src/utils/constants.js` with your theme configuration.
+
+## 📝 Changelog
+
+### Version 2.0.0 - Modern React Architecture
+- ⚛️ **Migrated to Vite + React**: Complete rewrite with modern React
+- 🧭 **Collapsible Sidebar**: Modern navigation with expand/collapse
+- 🎨 **Logo Integration**: Theme-tinted logo with toggle functionality
+- 📊 **Enhanced Dashboard**: Icons, trends, dynamic KPIs, improved charts
+- 🔍 **Event Search**: Real-time search with filtering
+- ⌨️ **Keyboard Shortcuts**: Full keyboard navigation
+- 🚀 **Performance**: Lazy loading, debounced saves, memoization
+- 🛡️ **Error Handling**: Error boundaries and better loading states
+- 🎯 **UX Improvements**: Better toast system, improved layouts
+
+### Version 1.4.0
+- ✅ Todo List system with Kanban board
+- 📋 Three-column status tracking
+- 🔍 Todo filtering
+
+### Version 1.3.0
+- 💬 Custom dialog system
+- 🎨 Theme-aware dialogs
+
+### Version 1.2.0
+- 🌲 Forest Grove theme
+- 📤 Export functionality
+- 🔄 Daily reset
+
+### Version 1.1.0
+- ➕ Custom category creation
+- 🗑️ Category deletion
+
+### Version 1.0.0
+- ✨ Initial release
+- 🎨 Dual theme system
+- 📊 Analytics dashboard
+
+## 🔮 Future Enhancements
+
+- [ ] Date range filtering for analytics
+- [ ] Additional chart types (pie chart, heatmap)
+- [ ] Data backup/restore functionality
+- [ ] Weekly/monthly summary reports
+- [ ] Custom reset schedules
+- [ ] TypeScript migration
+- [ ] Unit tests
+- [ ] PWA support
 
 ## 📄 License
 
@@ -333,108 +361,6 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 ## 🌟 Show Your Support
 
 Give a ⭐️ if you like this project!
-
-## 📝 Changelog
-
-### Version 1.0.0
-- ✨ Initial release
-- 🎨 Dual theme system (Dragon Dynasty & Neon Nexus)
-- 📊 Comprehensive analytics dashboard
-- 💾 Local storage persistence
-- 📱 Fully responsive design
-- ⚡ Smooth animations and transitions
-
-### Version 1.1.0
-- ✨ Added `Sass` default category
-- ➕ In-UI custom category creation (Settings page `＋` button)
-- 🗑️ Category deletion (deletes associated events; confirmation required)
-
-### Version 1.2.0
-- 🌲 Added Forest Grove theme
-- 📤 Export functionality (JSON and CSV)
-- 🔄 Daily automatic reset (tallies reset to 0 each day)
-- ➖ Decrement functionality on counter cards
-- 🧭 Multi-page navigation system (Home, Dashboard, Event Log, Settings)
-
-### Version 1.3.0
-- 💬 Custom dialog system replacing default browser alerts
-- 🎨 Theme-aware dialog styling with smooth animations
-- ⌨️ Keyboard support (Escape key to close dialogs)
-- ♿ Enhanced accessibility with ARIA attributes
-
-### Version 1.4.0
-- ✅ Full-featured Todo List system with Kanban board layout
-- 📋 Three-column status tracking (Todo, In Progress, Done)
-- 🔍 Todo filtering by status
-- 🎯 Status management with intuitive action buttons
-- 💾 Todo persistence in localStorage
-- 🎨 Theme-aware todo styling
-
-### Version 2.0.0 (Current) - React Migration & Performance Improvements
-- ⚛️ **Migrated to Vite + React** - Modern React architecture with component-based design
-- 🚀 **Performance Optimizations**:
-  - Debounced localStorage saves (500ms) to reduce write operations
-  - Lazy loading for all pages (code splitting)
-  - React.memo for component optimization
-  - useMemo/useCallback for expensive operations
-- 🛡️ **Error Handling**:
-  - Error boundaries for graceful error recovery
-  - Improved loading states with contextual messages
-- 🎨 **User Experience**:
-  - Search functionality in Event Log (category, phrase, timestamp)
-  - Keyboard shortcuts: `H` (Home), `D` (Dashboard), `E` (Event Log), `T` (Todos), `S` (Settings)
-  - `Ctrl+/` to show available shortcuts
-  - Better toast management with React Context
-- 🏗️ **Code Architecture**:
-  - React Context API for global state management
-  - Custom hooks: `useDebounce`, `useKeyboardShortcuts`, `useAppState`
-  - Better component organization and separation of concerns
-- 📦 **New Features**:
-  - Event search with real-time filtering
-  - Result count display in Event Log
-  - Improved todo input layout and styling
-
-## ⚡ Performance & Technical Improvements
-
-### Performance Optimizations
-- **Debounced LocalStorage**: State changes are debounced by 500ms, reducing excessive writes
-- **Code Splitting**: Pages are lazy-loaded for faster initial load times
-- **Component Memoization**: React.memo prevents unnecessary re-renders
-- **Optimized Calculations**: useMemo for expensive analytics computations
-
-### Error Handling & Reliability
-- **Error Boundaries**: Graceful error recovery with user-friendly messages
-- **Loading States**: Contextual loading spinners for better user feedback
-- **Memory Management**: Proper cleanup of timeouts and event listeners
-
-### User Experience Enhancements
-- **Event Search**: Real-time search across categories, phrases, and timestamps
-- **Keyboard Shortcuts**: 
-  - `H` - Home
-  - `D` - Dashboard
-  - `E` - Event Log
-  - `T` - Todos
-  - `S` - Settings
-  - `Ctrl+/` - Show shortcuts
-- **Improved Toast System**: Better management with React Context
-
-### Code Architecture
-- **React Context**: Global state management for toasts and dialogs
-- **Custom Hooks**: Reusable logic for debouncing, keyboard shortcuts, and state management
-- **Better Organization**: Clear separation of concerns and consistent file structure
-
-## 🔮 Future Enhancements
-
-- [ ] Date range filtering for analytics
-- [ ] Additional chart types (pie chart, heatmap)
-- [ ] Dark mode toggle independent of themes
-- [ ] Multi-language support
-- [ ] Data backup and restore
-- [ ] Weekly/monthly summary reports
-- [ ] Custom reset schedules (weekly, monthly, etc.)
-- [ ] TypeScript migration for type safety
-- [ ] Unit tests with Jest/React Testing Library
-- [ ] PWA support for offline functionality
 
 ---
 

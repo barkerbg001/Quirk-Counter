@@ -12,6 +12,7 @@ function Sidebar({ currentPage, onNavigate }) {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     const navItems = [
+        { id: 'about', icon: 'info', label: 'About', shortcut: 'A' },
         { id: 'home', icon: 'home', label: 'Home', shortcut: 'H' },
         { id: 'dashboard', icon: 'dashboard', label: 'Dashboard', shortcut: 'D' },
         { id: 'event-log', icon: 'list', label: 'Event Log', shortcut: 'E' },

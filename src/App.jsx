@@ -10,6 +10,7 @@ import LoadingSpinner from './components/LoadingSpinner';
 import './index.css';
 
 // Lazy load pages for better performance
+const About = lazy(() => import('./pages/About'));
 const Home = lazy(() => import('./pages/Home'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const EventLog = lazy(() => import('./pages/EventLog'));
@@ -17,7 +18,11 @@ const Todos = lazy(() => import('./pages/Todos'));
 const Settings = lazy(() => import('./pages/Settings'));
 
 function AppContent() {
-    const [currentPage, setCurrentPage] = useState('home');
+    // Check if user has seen about page, default to 'about' for first-time visitors
+    const [currentPage, setCurrentPage] = useState(() => {
+        const hasSeenAbout = localStorage.getItem('hasSeenAbout');
+        return hasSeenAbout ? 'home' : 'about';
+    });
     const { showToast, showDialog, toasts, dialog } = useApp();
     const appState = useAppState();
 
@@ -27,13 +32,14 @@ function AppContent() {
     }, []);
 
     useKeyboardShortcuts({
+        'a': () => navigateToPage('about'),
         'h': () => navigateToPage('home'),
         'd': () => navigateToPage('dashboard'),
         'e': () => navigateToPage('event-log'),
         't': () => navigateToPage('todos'),
         's': () => navigateToPage('settings'),
         'ctrl+/': () => {
-            showToast('Keyboard shortcuts: H=Home, D=Dashboard, E=Event Log, T=Todos, S=Settings');
+            showToast('Keyboard shortcuts: A=About, H=Home, D=Dashboard, E=Event Log, T=Todos, S=Settings');
         }
     });
 
@@ -46,7 +52,14 @@ function AppContent() {
             pageProps.showDialog = showDialog;
         }
 
+        // About page needs navigation function
+        if (currentPage === 'about') {
+            pageProps.onNavigate = setCurrentPage;
+        }
+
         switch (currentPage) {
+            case 'about':
+                return <About {...pageProps} />;
             case 'home':
                 return <Home {...pageProps} />;
             case 'dashboard':
@@ -58,7 +71,7 @@ function AppContent() {
             case 'settings':
                 return <Settings {...pageProps} />;
             default:
-                return <Home {...pageProps} />;
+                return <About {...pageProps} />;
         }
     };
 
