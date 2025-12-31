@@ -2,7 +2,7 @@ import { useState, lazy, Suspense, useCallback } from 'react';
 import { useAppState } from './hooks/useAppState';
 import { AppProvider, useApp } from './context/AppContext';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
-import Header from './components/Header';
+import Sidebar from './components/Sidebar';
 import ToastContainer from './components/ToastContainer';
 import Dialog from './components/Dialog';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -63,17 +63,19 @@ function AppContent() {
     };
 
     return (
-        <div className="container">
-            <Header currentPage={currentPage} onNavigate={setCurrentPage} />
-            <ToastContainer toasts={toasts} />
-            <Dialog 
-                show={dialog.show} 
-                message={dialog.message} 
-                onConfirm={dialog.onConfirm}
-            />
-            <Suspense fallback={<LoadingSpinner message="Loading page..." />}>
-                {renderPage()}
-            </Suspense>
+        <div className="app-layout">
+            <Sidebar currentPage={currentPage} onNavigate={setCurrentPage} />
+            <main className="main-content">
+                <ToastContainer toasts={toasts} />
+                <Dialog 
+                    show={dialog.show} 
+                    message={dialog.message} 
+                    onConfirm={dialog.onConfirm}
+                />
+                <Suspense fallback={<LoadingSpinner message="Loading page..." />}>
+                    {renderPage()}
+                </Suspense>
+            </main>
         </div>
     );
 }
