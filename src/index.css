@@ -1793,6 +1793,41 @@ body[data-theme="forest-grove"] .theme-option.active {
     justify-content: flex-end;
     gap: 12px;
     margin-bottom: 16px;
+    align-items: center;
+}
+
+.event-search-input {
+    flex: 1;
+    max-width: 300px;
+    padding: 10px 14px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: var(--card-background);
+    color: var(--text);
+    font-size: 1rem;
+    font-family: var(--font-family);
+    transition: all 0.3s ease;
+}
+
+.event-search-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.event-search-input::placeholder {
+    color: color-mix(in srgb, var(--text) 50%, transparent);
+}
+
+.search-results-info {
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 0.9rem;
+    text-align: center;
 }
 
 .export-button {
@@ -2184,24 +2219,42 @@ body[data-theme="ruby-sea"] .dialog-actions {
     padding: 0;
     max-width: 1400px;
     margin: 0 auto;
+    width: 100%;
 }
 
 .add-todo-wrapper {
-    margin-bottom: 24px;
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .add-todo-form {
     display: flex;
     gap: 12px;
     align-items: stretch;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    background: var(--card-background);
+    padding: 20px;
+    border-radius: 16px;
+    border: 2px solid var(--border);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.add-todo-form:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
 #new-todo-input {
     flex: 1;
     padding: 14px 18px;
-    border: 2px solid var(--border);
+    border: 2px solid color-mix(in srgb, var(--border) 50%, transparent);
     border-radius: 12px;
-    background: var(--card-background);
+    background: color-mix(in srgb, var(--card-background) 95%, var(--text));
     color: var(--text);
     font-size: 1rem;
     font-family: var(--font-family);
@@ -2212,6 +2265,7 @@ body[data-theme="ruby-sea"] .dialog-actions {
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+    background: var(--card-background);
 }
 
 #new-todo-input::placeholder {
@@ -2250,8 +2304,9 @@ body[data-theme="ruby-sea"] .dialog-actions {
 .todo-filters {
     display: flex;
     gap: 8px;
-    margin-bottom: 24px;
+    margin-bottom: 32px;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .todo-filter-button {
@@ -2512,13 +2567,18 @@ body[data-theme="ruby-sea"] .todo-item {
 }
 
 @media (max-width: 480px) {
+    .add-todo-wrapper {
+        margin-bottom: 24px;
+    }
+
     .add-todo-form {
-        flex-direction: column;
+        flex-direction: row;
+        max-width: 100%;
     }
 
     .add-todo-button {
         min-width: 48px;
-        width: auto;
+        width: 48px;
         flex-shrink: 0;
     }
 

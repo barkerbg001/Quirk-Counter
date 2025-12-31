@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import './CategoryCard.css';
 
 function CategoryCard({ category, categoryName, isPulsing, onIncrement, onDecrement, onDelete }) {
@@ -43,5 +44,5 @@ function CategoryCard({ category, categoryName, isPulsing, onIncrement, onDecrem
     );
 }
 
-export default CategoryCard;
+export default memo(CategoryCard);
 

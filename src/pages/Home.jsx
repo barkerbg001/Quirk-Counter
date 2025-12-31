@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import CategoryCard from '../components/CategoryCard';
+import LoadingSpinner from '../components/LoadingSpinner';
 import './Home.css';
 
 function Home({ appState, showToast, showDialog }) {
@@ -32,7 +33,7 @@ function Home({ appState, showToast, showDialog }) {
     };
 
     if (!appState.isInitialized) {
-        return <div>Loading...</div>;
+        return <LoadingSpinner message="Loading your counters..." />;
     }
 
     return (

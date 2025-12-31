@@ -1,12 +1,31 @@
 import { useState, useMemo } from 'react';
+import LoadingSpinner from '../components/LoadingSpinner';
 import './EventLog.css';
 
 function EventLog({ appState }) {
     const [sortColumn, setSortColumn] = useState('timestamp');
     const [sortDirection, setSortDirection] = useState('desc');
+    const [searchQuery, setSearchQuery] = useState('');
 
     const sortedEvents = useMemo(() => {
-        const sorted = [...appState.events].sort((a, b) => {
+        let filtered = [...appState.events];
+        
+        // Apply search filter
+        if (searchQuery.trim()) {
+            const query = searchQuery.toLowerCase().trim();
+            filtered = filtered.filter(event => {
+                const categoryName = appState.getCategoryName(event.categoryId).toLowerCase();
+                const phrase = event.phrase.toLowerCase();
+                const timestamp = new Date(event.timestamp).toLocaleString().toLowerCase();
+                return categoryName.includes(query) || 
+                       phrase.includes(query) || 
+                       timestamp.includes(query) ||
+                       event.categoryId.toLowerCase().includes(query);
+            });
+        }
+        
+        // Apply sorting
+        const sorted = filtered.sort((a, b) => {
             if (sortColumn === 'timestamp') {
                 const dateA = new Date(a.timestamp);
                 const dateB = new Date(b.timestamp);
@@ -20,7 +39,7 @@ function EventLog({ appState }) {
             }
         });
         return sorted;
-    }, [appState.events, sortColumn, sortDirection, appState.getCategoryName]);
+    }, [appState.events, sortColumn, sortDirection, searchQuery, appState.getCategoryName]);
 
     const handleSort = (column) => {
         if (sortColumn === column) {
@@ -87,7 +106,7 @@ function EventLog({ appState }) {
     };
 
     if (!appState.isInitialized) {
-        return <div>Loading...</div>;
+        return <LoadingSpinner message="Loading events..." />;
     }
 
     return (
@@ -95,6 +114,14 @@ function EventLog({ appState }) {
             <section className="event-log-section">
                 <h2 className="page-header">Event Log</h2>
                 <div className="event-log-actions">
+                    <input
+                        type="text"
+                        placeholder="Search events..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="event-search-input"
+                        aria-label="Search events"
+                    />
                     <button 
                         className="export-button" 
                         onClick={exportEvents}
@@ -104,6 +131,11 @@ function EventLog({ appState }) {
                         Export
                     </button>
                 </div>
+                {searchQuery && (
+                    <div className="search-results-info">
+                        Showing {sortedEvents.length} of {appState.events.length} events
+                    </div>
+                )}
                 <div className="table-wrapper">
                     <table className="event-table">
                         <thead>
@@ -132,7 +164,9 @@ function EventLog({ appState }) {
                         <tbody>
                             {sortedEvents.length === 0 ? (
                                 <tr>
-                                    <td colSpan="3" className="no-events">No events recorded yet</td>
+                                    <td colSpan="3" className="no-events">
+                                        {searchQuery ? 'No events match your search' : 'No events recorded yet'}
+                                    </td>
                                 </tr>
                             ) : (
                                 sortedEvents.map((event, idx) => {
@@ -158,4 +192,3 @@ function EventLog({ appState }) {
 }
 
 export default EventLog;
-

@@ -55,7 +55,7 @@ function Settings({ appState, showToast, showDialog }) {
     };
 
     if (!appState.isInitialized) {
-        return <div>Loading...</div>;
+        return <LoadingSpinner message="Loading settings..." />;
     }
 
     return (

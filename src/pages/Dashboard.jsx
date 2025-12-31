@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 import { themes } from '../utils/constants';
+import LoadingSpinner from '../components/LoadingSpinner';
 import './Dashboard.css';
 
 function Dashboard({ appState }) {
@@ -106,7 +107,7 @@ function Dashboard({ appState }) {
     };
 
     if (!appState.isInitialized) {
-        return <div>Loading...</div>;
+        return <LoadingSpinner message="Loading dashboard..." />;
     }
 
     return (
@@ -256,5 +257,5 @@ function Dashboard({ appState }) {
     );
 }
 
-export default Dashboard;
+export default memo(Dashboard);
 

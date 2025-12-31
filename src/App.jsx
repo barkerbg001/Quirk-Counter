@@ -1,57 +1,64 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense, useCallback } from 'react';
 import { useAppState } from './hooks/useAppState';
+import { AppProvider, useApp } from './context/AppContext';
+import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import Header from './components/Header';
-import Home from './pages/Home';
-import Dashboard from './pages/Dashboard';
-import EventLog from './pages/EventLog';
-import Todos from './pages/Todos';
-import Settings from './pages/Settings';
 import ToastContainer from './components/ToastContainer';
 import Dialog from './components/Dialog';
+import ErrorBoundary from './components/ErrorBoundary';
+import LoadingSpinner from './components/LoadingSpinner';
 import './index.css';
 
-function App() {
+// Lazy load pages for better performance
+const Home = lazy(() => import('./pages/Home'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const EventLog = lazy(() => import('./pages/EventLog'));
+const Todos = lazy(() => import('./pages/Todos'));
+const Settings = lazy(() => import('./pages/Settings'));
+
+function AppContent() {
     const [currentPage, setCurrentPage] = useState('home');
-    const [toasts, setToasts] = useState([]);
-    const [dialog, setDialog] = useState({ show: false, message: '', onConfirm: null });
-    
+    const { showToast, showDialog, toasts, dialog } = useApp();
     const appState = useAppState();
 
-    const showToast = (message) => {
-        const id = Date.now();
-        setToasts(prev => [...prev, { id, message }]);
-        setTimeout(() => {
-            setToasts(prev => prev.filter(toast => toast.id !== id));
-        }, 3000);
-    };
+    // Keyboard shortcuts
+    const navigateToPage = useCallback((page) => {
+        setCurrentPage(page);
+    }, []);
 
-    const showDialog = (message) => {
-        return new Promise((resolve) => {
-            setDialog({
-                show: true,
-                message,
-                onConfirm: (confirmed) => {
-                    setDialog({ show: false, message: '', onConfirm: null });
-                    resolve(confirmed);
-                }
-            });
-        });
-    };
+    useKeyboardShortcuts({
+        'h': () => navigateToPage('home'),
+        'd': () => navigateToPage('dashboard'),
+        'e': () => navigateToPage('event-log'),
+        't': () => navigateToPage('todos'),
+        's': () => navigateToPage('settings'),
+        'ctrl+/': () => {
+            showToast('Keyboard shortcuts: H=Home, D=Dashboard, E=Event Log, T=Todos, S=Settings');
+        }
+    });
 
     const renderPage = () => {
+        const pageProps = { appState };
+        const pagesWithHandlers = ['home', 'todos', 'settings'];
+        
+        if (pagesWithHandlers.includes(currentPage)) {
+            pageProps.showToast = showToast;
+            pageProps.showDialog = showDialog;
+        }
+
         switch (currentPage) {
             case 'home':
-                return <Home appState={appState} showToast={showToast} showDialog={showDialog} />;
+                return <Home {...pageProps} />;
             case 'dashboard':
-                return <Dashboard appState={appState} />;
+                return <Dashboard {...pageProps} />;
             case 'event-log':
-                return <EventLog appState={appState} />;
+                return <EventLog {...pageProps} />;
             case 'todos':
-                return <Todos appState={appState} showToast={showToast} showDialog={showDialog} />;
+                return <Todos {...pageProps} />;
             case 'settings':
-                return <Settings appState={appState} showToast={showToast} showDialog={showDialog} />;
+                return <Settings {...pageProps} />;
             default:
-                return <Home appState={appState} showToast={showToast} showDialog={showDialog} />;
+                return <Home {...pageProps} />;
         }
     };
 
@@ -64,8 +71,20 @@ function App() {
                 message={dialog.message} 
                 onConfirm={dialog.onConfirm}
             />
-            {renderPage()}
+            <Suspense fallback={<LoadingSpinner message="Loading page..." />}>
+                {renderPage()}
+            </Suspense>
         </div>
+    );
+}
+
+function App() {
+    return (
+        <ErrorBoundary>
+            <AppProvider>
+                <AppContent />
+            </AppProvider>
+        </ErrorBoundary>
     );
 }
 

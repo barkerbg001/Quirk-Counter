@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import LoadingSpinner from '../components/LoadingSpinner';
 import './Todos.css';
 
 function Todos({ appState, showToast, showDialog }) {
@@ -77,7 +78,7 @@ function Todos({ appState, showToast, showDialog }) {
     };
 
     if (!appState.isInitialized) {
-        return <div>Loading...</div>;
+        return <LoadingSpinner message="Loading todos..." />;
     }
 
     return (
@@ -88,6 +89,7 @@ function Todos({ appState, showToast, showDialog }) {
                 <div className="add-todo-wrapper">
                     <form className="add-todo-form" onSubmit={handleAddTodo}>
                         <input 
+                            id="new-todo-input"
                             type="text" 
                             placeholder="Add a new todo..." 
                             aria-label="New todo text" 

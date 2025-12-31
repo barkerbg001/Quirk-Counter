@@ -134,11 +134,25 @@ npm run preview
 - Sort the event table by clicking column headers (Timestamp or Category)
 - View real-time updates as you add new events
 
+### Searching Events
+- Navigate to the **Event Log** page
+- Use the search bar to filter events in real-time
+- Search across category names, phrases, timestamps, or category IDs
+- View the result count to see how many events match your search
+
 ### Exporting Data
 - Navigate to the **Event Log** page
 - Click the **Export** button to download your events
 - Choose between JSON or CSV format (both are downloaded)
 - Files are automatically timestamped
+
+### Keyboard Shortcuts
+- Press `H` to go to Home
+- Press `D` to go to Dashboard
+- Press `E` to go to Event Log
+- Press `T` to go to Todos
+- Press `S` to go to Settings
+- Press `Ctrl+/` (or `Cmd+/` on Mac) to see all available shortcuts
 
 ### Deleting Categories
 - Click the **delete button** (🗑️) on any category card
@@ -173,11 +187,13 @@ Quirk-Counter/
 │   ├── main.jsx        # React entry point
 │   ├── App.jsx         # Main App component
 │   ├── index.css       # Global styles and theme system
-│   ├── components/      # Reusable components
+│   ├── components/     # Reusable components
 │   │   ├── Header.jsx
 │   │   ├── CategoryCard.jsx
 │   │   ├── ToastContainer.jsx
-│   │   └── Dialog.jsx
+│   │   ├── Dialog.jsx
+│   │   ├── ErrorBoundary.jsx
+│   │   └── LoadingSpinner.jsx
 │   ├── pages/          # Page components
 │   │   ├── Home.jsx
 │   │   ├── Dashboard.jsx
@@ -185,7 +201,11 @@ Quirk-Counter/
 │   │   ├── Todos.jsx
 │   │   └── Settings.jsx
 │   ├── hooks/          # Custom React hooks
-│   │   └── useAppState.js
+│   │   ├── useAppState.js
+│   │   ├── useDebounce.js
+│   │   └── useKeyboardShortcuts.js
+│   ├── context/        # React Context providers
+│   │   └── AppContext.jsx
 │   └── utils/          # Utility functions
 │       ├── constants.js
 │       └── storage.js
@@ -226,10 +246,10 @@ You can add categories in two ways:
 
 - **Quick (UI)**: Navigate to the Settings page, click the `＋` button, enter an id (lowercase, no spaces, only `a-z0-9_-`) and a display name, then click `Create`. The new category is stored in localStorage and immediately appears in the UI.
 
-- **Source (code)**: Edit the `DEFAULT_CATEGORIES` array in `script.js` if you want a category to ship by default:
+- **Source (code)**: Edit the `DEFAULT_CATEGORIES` array in `src/utils/constants.js` if you want a category to ship by default:
 
 ```javascript
-const DEFAULT_CATEGORIES = [
+export const DEFAULT_CATEGORIES = [
     { id: "burp", name: "Burps", count: 0 },
     { id: "fart", name: "Farts", count: 0 },
     { id: "bug", name: "Bugs Introduced", count: 0 },
@@ -239,7 +259,7 @@ const DEFAULT_CATEGORIES = [
 ```
 
 ### Adding Custom Phrases
-Add phrases to the theme object in `script.js`:
+Add phrases to the theme object in `src/utils/constants.js`:
 
 ```javascript
 phrases: {
@@ -252,7 +272,7 @@ phrases: {
 ```
 
 ### Creating a New Theme
-Extend the `themes` object in `script.js` with your custom theme configuration.
+Extend the `themes` object in `src/utils/constants.js` with your custom theme configuration.
 
 ## 🌐 Browser Support
 
@@ -281,7 +301,7 @@ Fully responsive design optimized for:
 
 ## 🎯 Key Technical Features
 
-- **React Hooks**: Custom hooks for state management (useState, useEffect)
+- **React Hooks**: Custom hooks for state management (useState, useEffect, useCallback, useMemo)
 - **State Management**: Centralized state with localStorage persistence via custom hook
 - **Event System**: Custom event tracking with timestamps
 - **Responsive Grid Layouts**: CSS Grid and Flexbox for adaptive layouts
@@ -292,6 +312,10 @@ Fully responsive design optimized for:
 - **Todo List Management**: Kanban-style todo board with status tracking and filtering
 - **Component-Based Architecture**: Modular React components for maintainability
 - **Fast Development**: Vite for instant HMR and optimized builds
+- **Performance Optimized**: Debounced localStorage saves, lazy loading, React.memo
+- **Error Handling**: Error boundaries for graceful error recovery
+- **Search Functionality**: Real-time search in Event Log
+- **Keyboard Shortcuts**: Full keyboard navigation support
 
 ## 📄 License
 
@@ -338,13 +362,66 @@ Give a ⭐️ if you like this project!
 - ⌨️ Keyboard support (Escape key to close dialogs)
 - ♿ Enhanced accessibility with ARIA attributes
 
-### Version 1.4.0 (Current)
+### Version 1.4.0
 - ✅ Full-featured Todo List system with Kanban board layout
 - 📋 Three-column status tracking (Todo, In Progress, Done)
 - 🔍 Todo filtering by status
 - 🎯 Status management with intuitive action buttons
 - 💾 Todo persistence in localStorage
 - 🎨 Theme-aware todo styling
+
+### Version 2.0.0 (Current) - React Migration & Performance Improvements
+- ⚛️ **Migrated to Vite + React** - Modern React architecture with component-based design
+- 🚀 **Performance Optimizations**:
+  - Debounced localStorage saves (500ms) to reduce write operations
+  - Lazy loading for all pages (code splitting)
+  - React.memo for component optimization
+  - useMemo/useCallback for expensive operations
+- 🛡️ **Error Handling**:
+  - Error boundaries for graceful error recovery
+  - Improved loading states with contextual messages
+- 🎨 **User Experience**:
+  - Search functionality in Event Log (category, phrase, timestamp)
+  - Keyboard shortcuts: `H` (Home), `D` (Dashboard), `E` (Event Log), `T` (Todos), `S` (Settings)
+  - `Ctrl+/` to show available shortcuts
+  - Better toast management with React Context
+- 🏗️ **Code Architecture**:
+  - React Context API for global state management
+  - Custom hooks: `useDebounce`, `useKeyboardShortcuts`, `useAppState`
+  - Better component organization and separation of concerns
+- 📦 **New Features**:
+  - Event search with real-time filtering
+  - Result count display in Event Log
+  - Improved todo input layout and styling
+
+## ⚡ Performance & Technical Improvements
+
+### Performance Optimizations
+- **Debounced LocalStorage**: State changes are debounced by 500ms, reducing excessive writes
+- **Code Splitting**: Pages are lazy-loaded for faster initial load times
+- **Component Memoization**: React.memo prevents unnecessary re-renders
+- **Optimized Calculations**: useMemo for expensive analytics computations
+
+### Error Handling & Reliability
+- **Error Boundaries**: Graceful error recovery with user-friendly messages
+- **Loading States**: Contextual loading spinners for better user feedback
+- **Memory Management**: Proper cleanup of timeouts and event listeners
+
+### User Experience Enhancements
+- **Event Search**: Real-time search across categories, phrases, and timestamps
+- **Keyboard Shortcuts**: 
+  - `H` - Home
+  - `D` - Dashboard
+  - `E` - Event Log
+  - `T` - Todos
+  - `S` - Settings
+  - `Ctrl+/` - Show shortcuts
+- **Improved Toast System**: Better management with React Context
+
+### Code Architecture
+- **React Context**: Global state management for toasts and dialogs
+- **Custom Hooks**: Reusable logic for debouncing, keyboard shortcuts, and state management
+- **Better Organization**: Clear separation of concerns and consistent file structure
 
 ## 🔮 Future Enhancements
 
@@ -355,7 +432,9 @@ Give a ⭐️ if you like this project!
 - [ ] Data backup and restore
 - [ ] Weekly/monthly summary reports
 - [ ] Custom reset schedules (weekly, monthly, etc.)
-- [ ] Event search and filtering
+- [ ] TypeScript migration for type safety
+- [ ] Unit tests with Jest/React Testing Library
+- [ ] PWA support for offline functionality
 
 ---
 

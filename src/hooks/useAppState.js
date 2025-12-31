@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { DEFAULT_CATEGORIES, themes } from '../utils/constants';
 import { loadState, saveState, getTodayDateString } from '../utils/storage';
+import { useDebouncedCallback } from './useDebounce';
 
 export function useAppState() {
     const [categories, setCategories] = useState([]);
@@ -61,10 +62,15 @@ export function useAppState() {
         setIsInitialized(true);
     }, []);
 
-    // Save state whenever it changes
+    // Debounced save function to avoid excessive localStorage writes
+    const debouncedSave = useDebouncedCallback((state) => {
+        saveState(state);
+    }, 500);
+
+    // Save state whenever it changes (debounced)
     useEffect(() => {
         if (isInitialized) {
-            saveState({
+            debouncedSave({
                 categories,
                 theme,
                 events,
@@ -72,7 +78,7 @@ export function useAppState() {
                 todos
             });
         }
-    }, [categories, theme, events, lastResetDate, todos, isInitialized]);
+    }, [categories, theme, events, lastResetDate, todos, isInitialized, debouncedSave]);
 
     // Apply theme to document
     useEffect(() => {
@@ -102,7 +108,7 @@ export function useAppState() {
         body.setAttribute("data-theme", theme);
     }, [theme]);
 
-    const incrementCategory = (categoryId) => {
+    const incrementCategory = useCallback((categoryId) => {
         const category = categories.find(cat => cat.id === categoryId);
         const themeObj = themes[theme];
         
@@ -131,9 +137,9 @@ export function useAppState() {
         setEvents(evts => [...evts, event]);
         
         return phrase;
-    };
+    }, [categories, theme]);
 
-    const decrementCategory = (categoryId) => {
+    const decrementCategory = useCallback((categoryId) => {
         const category = categories.find(cat => cat.id === categoryId);
         if (!category || category.count === 0) {
             return null;
@@ -158,14 +164,14 @@ export function useAppState() {
         const themeObj = themes[theme];
         const categoryName = themeObj?.categoryNames?.[categoryId] || category.name;
         return `Removed: ${categoryName} entry`;
-    };
+    }, [categories, theme]);
 
-    const deleteCategory = (categoryId) => {
+    const deleteCategory = useCallback((categoryId) => {
         setCategories(cats => cats.filter(cat => cat.id !== categoryId));
         setEvents(evts => evts.filter(e => e.categoryId !== categoryId));
-    };
+    }, []);
 
-    const addCategory = (id, name) => {
+    const addCategory = useCallback((id, name) => {
         const newCat = { id: id, name: name, count: 0 };
         setCategories(cats => [...cats, newCat]);
         
@@ -179,22 +185,22 @@ export function useAppState() {
                 themeObj.phrases[id] = themeObj.phrases?.default ? [...themeObj.phrases.default] : ['Event added.'];
             }
         });
-    };
+    }, []);
 
-    const changeTheme = (themeKey) => {
+    const changeTheme = useCallback((themeKey) => {
         setTheme(themeKey);
-    };
+    }, []);
 
-    const getCategoryName = (categoryId) => {
+    const getCategoryName = useCallback((categoryId) => {
         const themeObj = themes[theme];
         if (themeObj?.categoryNames?.[categoryId]) {
             return themeObj.categoryNames[categoryId];
         }
         const category = categories.find(c => c.id === categoryId);
         return category ? category.name : categoryId;
-    };
+    }, [categories, theme]);
 
-    const addTodo = (text) => {
+    const addTodo = useCallback((text) => {
         const newTodo = {
             id: `todo-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
             text: text,
@@ -202,19 +208,19 @@ export function useAppState() {
             createdAt: new Date().toISOString()
         };
         setTodos(tds => [...tds, newTodo]);
-    };
+    }, []);
 
-    const updateTodoStatus = (todoId, newStatus) => {
+    const updateTodoStatus = useCallback((todoId, newStatus) => {
         setTodos(tds => 
             tds.map(todo => 
                 todo.id === todoId ? { ...todo, status: newStatus } : todo
             )
         );
-    };
+    }, []);
 
-    const deleteTodo = (todoId) => {
+    const deleteTodo = useCallback((todoId) => {
         setTodos(tds => tds.filter(t => t.id !== todoId));
-    };
+    }, []);
 
     return {
         categories,
