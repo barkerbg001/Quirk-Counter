@@ -1032,6 +1032,43 @@ body[data-theme="forest-grove"] .theme-option.active {
     }
 }
 
+/* Drag and Drop Styles */
+.card[draggable="true"] {
+    cursor: grab;
+    user-select: none;
+}
+
+.card[draggable="true"]:active {
+    cursor: grabbing;
+}
+
+.card.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+    cursor: grabbing;
+    z-index: 1000;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.card.drag-over {
+    border-color: var(--accent);
+    border-width: 3px;
+    transform: scale(1.05);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 
+                0 0 0 3px var(--accent) inset,
+                0 0 40px color-mix(in srgb, var(--accent) 40%, transparent);
+    background: color-mix(in srgb, var(--card-background) 90%, var(--accent));
+}
+
+.card.drag-over::before {
+    opacity: 1;
+    height: 5px;
+}
+
+.card.drag-over::after {
+    opacity: 1;
+}
+
 .card-title {
     font-size: 1.25rem;
     font-weight: 600;

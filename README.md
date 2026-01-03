@@ -49,10 +49,12 @@
 
 ### 🏠 Home Page
 - **Counter Cards**: Dynamic category cards with increment/decrement
+- **Drag & Drop Reordering**: Drag cards to reorganize your categories - order persists automatically
 - **Pulse Animations**: Visual feedback when incrementing
 - **Delete Categories**: Remove categories with confirmation dialog
 - **Custom Categories**: Create new categories on the fly
 - **Theme-Aware Styling**: All cards adapt to current theme
+- **Visual Drag Feedback**: Smooth animations and highlights during drag operations
 
 ### 📋 Event Log
 - **Real-Time Search**: Filter events by category, phrase, timestamp, or ID
@@ -135,6 +137,12 @@ npm run preview
 3. Watch the counter increment with a pulse animation
 4. Receive a random contextual phrase in a toast notification
 5. View the event appear in the analytics dashboard
+
+### Reorganizing Categories
+- **Drag and Drop**: Click and drag any category card to reorder it
+- **Visual Feedback**: Cards show visual feedback during drag operations
+- **Auto-Save**: Your new order is automatically saved to localStorage
+- **Button Protection**: Buttons remain clickable - drag only starts from card body
 
 ### Viewing Analytics
 - Navigate to **Dashboard** to see:
@@ -250,6 +258,7 @@ Quirk-Counter/
 
 ### User Experience
 - ⌨️ **Keyboard Shortcuts**: Full keyboard navigation
+- 🖱️ **Drag & Drop**: Intuitive card reordering with visual feedback
 - 🔍 **Real-Time Search**: Instant filtering in Event Log
 - 📱 **Responsive Design**: Works on all devices
 - 🎨 **Smooth Animations**: Polished transitions throughout
@@ -310,6 +319,7 @@ Extend the `themes` object in `src/utils/constants.js` with your theme configura
 - 🚀 **Performance**: Lazy loading, debounced saves, memoization
 - 🛡️ **Error Handling**: Error boundaries and better loading states
 - 🎯 **UX Improvements**: Better toast system, improved layouts
+- 🖱️ **Drag & Drop**: Reorganize category cards with intuitive drag and drop
 
 ### Version 1.4.0
 - ✅ Todo List system with Kanban board

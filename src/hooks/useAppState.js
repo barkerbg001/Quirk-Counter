@@ -222,6 +222,15 @@ export function useAppState() {
         setTodos(tds => tds.filter(t => t.id !== todoId));
     }, []);
 
+    const reorderCategories = useCallback((fromIndex, toIndex) => {
+        setCategories(cats => {
+            const newCats = [...cats];
+            const [moved] = newCats.splice(fromIndex, 1);
+            newCats.splice(toIndex, 0, moved);
+            return newCats;
+        });
+    }, []);
+
     return {
         categories,
         theme,
@@ -236,7 +245,8 @@ export function useAppState() {
         getCategoryName,
         addTodo,
         updateTodoStatus,
-        deleteTodo
+        deleteTodo,
+        reorderCategories
     };
 }
 

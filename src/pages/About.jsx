@@ -12,7 +12,7 @@ function About({ onNavigate }) {
         {
             icon: 'track_changes',
             title: 'Track Events',
-            description: 'Count and track any quirky events with customizable categories'
+            description: 'Count and track any quirky events with customizable categories. Drag and drop to reorganize your counters.'
         },
         {
             icon: 'analytics',
@@ -28,6 +28,11 @@ function About({ onNavigate }) {
             icon: 'checklist',
             title: 'Todo Management',
             description: 'Built-in Kanban board for managing your tasks'
+        },
+        {
+            icon: 'drag_indicator',
+            title: 'Drag & Drop',
+            description: 'Reorganize category cards with intuitive drag and drop. Your order is saved automatically.'
         },
         {
             icon: 'search',
