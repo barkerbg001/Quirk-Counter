@@ -35,6 +35,11 @@ function About({ onNavigate }) {
             description: 'Reorganize category cards with intuitive drag and drop. Your order is saved automatically.'
         },
         {
+            icon: 'notifications',
+            title: 'Smart Reminders',
+            description: 'Gentle nudges at the right time so you never miss a habit. Set custom reminders for any category.'
+        },
+        {
             icon: 'search',
             title: 'Smart Search',
             description: 'Find events quickly with real-time search and filtering'

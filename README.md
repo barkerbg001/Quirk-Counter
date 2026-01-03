@@ -75,6 +75,11 @@
 - **Theme Selection**: Switch between four beautiful themes
 - **Category Management**: Add and delete custom categories
 - **Validation**: Category ID validation (lowercase, alphanumeric, dashes, underscores)
+- **Smart Reminders**: Set gentle reminders for any category at specific times
+  - In-app toast notifications
+  - Browser notifications (with permission)
+  - Toggle reminders on/off
+  - Edit or delete reminders anytime
 - **Real-Time Updates**: Changes apply immediately
 
 ### 💾 Data Management
@@ -172,6 +177,15 @@ npm run preview
 - Click **Export** button
 - Both JSON and CSV files are downloaded automatically
 
+### Setting Up Reminders
+- Navigate to **Settings** → **Smart Reminders**
+- Click **Add Reminder** for any category
+- Set the time using the time picker
+- Enable browser notifications (optional) for background reminders
+- Toggle reminders on/off as needed
+- Edit or delete reminders anytime
+- Reminders trigger at the set time with gentle in-app and browser notifications
+
 ## 🏗️ Project Structure
 
 ```
@@ -201,7 +215,8 @@ Quirk-Counter/
 │   ├── hooks/              # Custom React hooks
 │   │   ├── useAppState.js  # Main state management
 │   │   ├── useDebounce.js  # Debouncing utilities
-│   │   └── useKeyboardShortcuts.js
+│   │   ├── useKeyboardShortcuts.js
+│   │   └── useReminders.js # Smart reminder system
 │   ├── context/           # React Context providers
 │   │   └── AppContext.jsx  # Global state (toasts, dialogs)
 │   └── utils/              # Utility functions
@@ -259,6 +274,7 @@ Quirk-Counter/
 ### User Experience
 - ⌨️ **Keyboard Shortcuts**: Full keyboard navigation
 - 🖱️ **Drag & Drop**: Intuitive card reordering with visual feedback
+- ⏰ **Smart Reminders**: Gentle notifications to help you never miss tracking habits
 - 🔍 **Real-Time Search**: Instant filtering in Event Log
 - 📱 **Responsive Design**: Works on all devices
 - 🎨 **Smooth Animations**: Polished transitions throughout
@@ -320,6 +336,7 @@ Extend the `themes` object in `src/utils/constants.js` with your theme configura
 - 🛡️ **Error Handling**: Error boundaries and better loading states
 - 🎯 **UX Improvements**: Better toast system, improved layouts
 - 🖱️ **Drag & Drop**: Reorganize category cards with intuitive drag and drop
+- ⏰ **Smart Reminders**: Gentle nudges at the right time so you never miss a habit
 
 ### Version 1.4.0
 - ✅ Todo List system with Kanban board
