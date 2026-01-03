@@ -9,6 +9,7 @@ export function useAppState() {
     const [events, setEvents] = useState([]);
     const [lastResetDate, setLastResetDate] = useState(null);
     const [todos, setTodos] = useState([]);
+    const [reminders, setReminders] = useState([]);
     const [isInitialized, setIsInitialized] = useState(false);
 
     // Initialize state from localStorage
@@ -22,6 +23,7 @@ export function useAppState() {
             let loadedEvents = saved.events || [];
             let loadedLastResetDate = saved.lastResetDate || null;
             let loadedTodos = saved.todos || [];
+            let loadedReminders = saved.reminders || [];
             
             // Check if it's a new day - reset counts if needed
             if (loadedLastResetDate !== today) {
@@ -52,11 +54,13 @@ export function useAppState() {
             setEvents(loadedEvents);
             setLastResetDate(loadedLastResetDate);
             setTodos(loadedTodos);
+            setReminders(loadedReminders);
         } else {
             setCategories([...DEFAULT_CATEGORIES]);
             setEvents([]);
             setLastResetDate(today);
             setTodos([]);
+            setReminders([]);
         }
         
         setIsInitialized(true);
@@ -75,10 +79,11 @@ export function useAppState() {
                 theme,
                 events,
                 lastResetDate,
-                todos
+                todos,
+                reminders
             });
         }
-    }, [categories, theme, events, lastResetDate, todos, isInitialized, debouncedSave]);
+    }, [categories, theme, events, lastResetDate, todos, reminders, isInitialized, debouncedSave]);
 
     // Apply theme to document
     useEffect(() => {
@@ -231,11 +236,40 @@ export function useAppState() {
         });
     }, []);
 
+    const addReminder = useCallback((categoryId, time, enabled = true) => {
+        setReminders(rem => {
+            // Remove existing reminder for this category if any
+            const filtered = rem.filter(r => r.categoryId !== categoryId);
+            return [...filtered, { categoryId, time, enabled, lastTriggered: null }];
+        });
+    }, []);
+
+    const updateReminder = useCallback((categoryId, updates) => {
+        setReminders(rem => 
+            rem.map(r => 
+                r.categoryId === categoryId ? { ...r, ...updates } : r
+            )
+        );
+    }, []);
+
+    const deleteReminder = useCallback((categoryId) => {
+        setReminders(rem => rem.filter(r => r.categoryId !== categoryId));
+    }, []);
+
+    const toggleReminder = useCallback((categoryId) => {
+        setReminders(rem => 
+            rem.map(r => 
+                r.categoryId === categoryId ? { ...r, enabled: !r.enabled } : r
+            )
+        );
+    }, []);
+
     return {
         categories,
         theme,
         events,
         todos,
+        reminders,
         isInitialized,
         incrementCategory,
         decrementCategory,
@@ -246,7 +280,11 @@ export function useAppState() {
         addTodo,
         updateTodoStatus,
         deleteTodo,
-        reorderCategories
+        reorderCategories,
+        addReminder,
+        updateReminder,
+        deleteReminder,
+        toggleReminder
     };
 }
 

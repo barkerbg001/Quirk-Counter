@@ -2,6 +2,7 @@ import { useState, lazy, Suspense, useCallback, useEffect } from 'react';
 import { useAppState } from './hooks/useAppState';
 import { AppProvider, useApp } from './context/AppContext';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
+import { useReminders } from './hooks/useReminders';
 import Sidebar from './components/Sidebar';
 import ToastContainer from './components/ToastContainer';
 import Dialog from './components/Dialog';
@@ -25,6 +26,15 @@ function AppContent() {
     });
     const { showToast, showDialog, toasts, dialog } = useApp();
     const appState = useAppState();
+
+    // Smart reminders
+    useReminders(
+        appState.reminders,
+        appState.categories,
+        appState.getCategoryName,
+        showToast,
+        appState.updateReminder
+    );
 
     // Keyboard shortcuts
     const navigateToPage = useCallback((page) => {

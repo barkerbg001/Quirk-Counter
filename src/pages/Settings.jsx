@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { themes } from '../utils/constants';
+import LoadingSpinner from '../components/LoadingSpinner';
 import './Settings.css';
 
 function Settings({ appState, showToast, showDialog }) {
     const [showAddForm, setShowAddForm] = useState(false);
     const [newCategoryId, setNewCategoryId] = useState('');
     const [newCategoryName, setNewCategoryName] = useState('');
+    const [editingReminder, setEditingReminder] = useState(null);
+    const [reminderTime, setReminderTime] = useState('09:00');
 
     const handleThemeChange = (themeKey) => {
         appState.changeTheme(themeKey);
@@ -50,8 +53,51 @@ function Settings({ appState, showToast, showDialog }) {
         
         if (confirmed) {
             appState.deleteCategory(categoryId);
+            // Also delete any reminders for this category
+            appState.deleteReminder(categoryId);
             showToast(`${categoryName} deleted`);
         }
+    };
+
+    const handleAddReminder = (categoryId) => {
+        appState.addReminder(categoryId, reminderTime, true);
+        showToast('Reminder added');
+        setEditingReminder(null);
+        setReminderTime('09:00');
+    };
+
+    const handleUpdateReminder = (categoryId) => {
+        appState.updateReminder(categoryId, { time: reminderTime });
+        showToast('Reminder updated');
+        setEditingReminder(null);
+        setReminderTime('09:00');
+    };
+
+    const handleDeleteReminder = async (categoryId) => {
+        const categoryName = appState.getCategoryName(categoryId);
+        const confirmed = await showDialog(`Delete reminder for "${categoryName}"?`);
+        
+        if (confirmed) {
+            appState.deleteReminder(categoryId);
+            showToast('Reminder deleted');
+        }
+    };
+
+    const handleRequestNotificationPermission = async () => {
+        if ('Notification' in window) {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                showToast('Notifications enabled! You\'ll receive gentle reminders.');
+            } else if (permission === 'denied') {
+                showToast('Notifications blocked. Please enable them in your browser settings.');
+            }
+        } else {
+            showToast('Your browser doesn\'t support notifications.');
+        }
+    };
+
+    const getReminderForCategory = (categoryId) => {
+        return appState.reminders.find(r => r.categoryId === categoryId);
     };
 
     if (!appState.isInitialized) {
@@ -170,6 +216,142 @@ function Settings({ appState, showToast, showDialog }) {
                             ))
                         )}
                     </div>
+                </div>
+
+                <div className="settings-group">
+                    <div className="settings-title-row">
+                        <h3 className="settings-title">Smart Reminders</h3>
+                        {('Notification' in window && Notification.permission !== 'granted') && (
+                            <button
+                                className="notification-permission-button"
+                                onClick={handleRequestNotificationPermission}
+                                title="Enable browser notifications"
+                            >
+                                <span className="material-icons">notifications_off</span>
+                                Enable Notifications
+                            </button>
+                        )}
+                    </div>
+                    <p className="settings-description">
+                        Set gentle reminders to help you never miss tracking your habits. 
+                        Reminders will show as in-app notifications and browser notifications (if enabled).
+                    </p>
+                    
+                    {appState.categories.length === 0 ? (
+                        <p style={{ textAlign: 'center', color: 'var(--text)', opacity: 0.7, padding: '20px' }}>
+                            Add categories first to set up reminders.
+                        </p>
+                    ) : (
+                        <div className="reminders-list">
+                            {appState.categories.map(category => {
+                                const reminder = getReminderForCategory(category.id);
+                                const isEditing = editingReminder === category.id;
+                                
+                                return (
+                                    <div key={category.id} className="reminder-item">
+                                        <div className="reminder-item-info">
+                                            <div className="reminder-item-name">
+                                                {appState.getCategoryName(category.id)}
+                                            </div>
+                                            {reminder && !isEditing && (
+                                                <div className="reminder-item-time">
+                                                    <span className="material-icons">schedule</span>
+                                                    {reminder.time}
+                                                    {reminder.enabled ? (
+                                                        <span className="reminder-status enabled">Active</span>
+                                                    ) : (
+                                                        <span className="reminder-status disabled">Paused</span>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
+                                        
+                                        {isEditing ? (
+                                            <div className="reminder-edit-form">
+                                                <input
+                                                    type="time"
+                                                    value={reminderTime}
+                                                    onChange={(e) => setReminderTime(e.target.value)}
+                                                    className="reminder-time-input"
+                                                />
+                                                <div className="reminder-edit-actions">
+                                                    <button
+                                                        className="reminder-save-button"
+                                                        onClick={() => {
+                                                            if (reminder) {
+                                                                handleUpdateReminder(category.id);
+                                                            } else {
+                                                                handleAddReminder(category.id);
+                                                            }
+                                                        }}
+                                                    >
+                                                        Save
+                                                    </button>
+                                                    <button
+                                                        className="reminder-cancel-button"
+                                                        onClick={() => {
+                                                            setEditingReminder(null);
+                                                            setReminderTime('09:00');
+                                                        }}
+                                                    >
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="reminder-item-actions">
+                                                {reminder ? (
+                                                    <>
+                                                        <button
+                                                            className="reminder-toggle-button"
+                                                            onClick={() => {
+                                                                appState.toggleReminder(category.id);
+                                                                showToast(reminder.enabled ? 'Reminder paused' : 'Reminder enabled');
+                                                            }}
+                                                            title={reminder.enabled ? 'Pause reminder' : 'Enable reminder'}
+                                                        >
+                                                            <span className="material-icons">
+                                                                {reminder.enabled ? 'notifications' : 'notifications_off'}
+                                                            </span>
+                                                        </button>
+                                                        <button
+                                                            className="reminder-edit-button"
+                                                            onClick={() => {
+                                                                setEditingReminder(category.id);
+                                                                setReminderTime(reminder.time);
+                                                            }}
+                                                            title="Edit reminder"
+                                                        >
+                                                            <span className="material-icons">edit</span>
+                                                        </button>
+                                                        <button
+                                                            className="reminder-delete-button"
+                                                            onClick={() => handleDeleteReminder(category.id)}
+                                                            title="Delete reminder"
+                                                        >
+                                                            <span className="material-icons">delete</span>
+                                                        </button>
+                                                    </>
+                                                ) : (
+                                                    <button
+                                                        className="reminder-add-button"
+                                                        onClick={() => {
+                                                            setEditingReminder(category.id);
+                                                            setReminderTime('09:00');
+                                                        }}
+                                                        title="Add reminder"
+                                                    >
+                                                        <span className="material-icons">add</span>
+                                                        Add Reminder
+                                                    </button>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
                 </div>
             </section>
         </div>
